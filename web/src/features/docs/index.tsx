@@ -19,13 +19,18 @@ For commercial licensing, please contact support@quantumnous.com
 import { Link } from '@tanstack/react-router'
 import {
   ArrowRight,
+  BarChart3,
   Check,
   CheckCircle2,
+  Clapperboard,
   Copy,
+  FileText,
   KeyRound,
   Route,
   ShieldCheck,
+  SlidersHorizontal,
   TerminalSquare,
+  Users,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -43,19 +48,69 @@ const CODE_LANGUAGES: Array<{ id: CodeLanguage; label: string }> = [
   { id: 'node', label: 'Node.js' },
 ]
 
-const DOMESTIC_MODELS = [
+const ENTERPRISE_SCENARIOS = [
+  [
+    'content',
+    FileText,
+    'Content and marketing production',
+    'Create product copy, campaign variants, scripts, and long-form content with a shared team gateway.',
+  ],
+  [
+    'video',
+    Clapperboard,
+    'Video and creative workflows',
+    'Connect text-to-video and image-to-video models for product demos, short videos, and creative review pipelines.',
+  ],
+  [
+    'knowledge',
+    Users,
+    'Knowledge and customer service',
+    'Build internal assistants, document Q&A, and customer support flows with controlled model access.',
+  ],
+  [
+    'automation',
+    SlidersHorizontal,
+    'Agents and business automation',
+    'Give internal tools one stable API for structured output, reasoning, extraction, and workflow automation.',
+  ],
+] as const
+
+const API_SURFACE = [
+  [
+    'POST',
+    '/v1/chat/completions',
+    'Text generation, reasoning, structured output, and multimodal chat',
+  ],
+  [
+    'POST',
+    '/v1/images/generations',
+    'Image generation and creative asset production',
+  ],
+  ['POST', '/v1/videos', 'Asynchronous text-to-video and image-to-video tasks'],
+  [
+    'POST',
+    '/v1/audio/speech',
+    'Speech synthesis for narration and voice workflows',
+  ],
+  [
+    'POST',
+    '/v1/embeddings',
+    'Text vectors for search, RAG, and knowledge bases',
+  ],
+  [
+    'GET',
+    '/v1/models',
+    'Discover the models and aliases enabled for your workspace',
+  ],
+] as const
+
+const MODEL_USE_CASES = [
   ['deepseek-chat', 'DeepSeek', 'Chat and coding'],
   ['deepseek-reasoner', 'DeepSeek', 'Reasoning tasks'],
   ['qwen-max', 'Qwen', 'Long context and Chinese understanding'],
   ['doubao-seed-1-6', 'Doubao', 'General conversation and content'],
   ['moonshot-v1-128k', 'Kimi', 'Long document processing'],
   ['glm-4.5', 'GLM', 'Conversation and agent tasks'],
-] as const
-
-const ENDPOINTS = [
-  ['POST', '/v1/chat/completions', 'Chat and reasoning'],
-  ['GET', '/v1/models', 'List available models'],
-  ['POST', '/v1/embeddings', 'Create text embeddings'],
 ] as const
 
 const ERROR_CODES = [
@@ -73,9 +128,9 @@ export function DeveloperDocs() {
   const apiBaseUrl = `${window.location.origin}/v1`
   const codeExamples = useMemo(
     () => ({
-      curl: `curl ${apiBaseUrl}/chat/completions \\\n  -H "Authorization: Bearer $TOKENFLOW_API_KEY" \\\n  -H "Content-Type: application/json" \\\n  -d '{
-    "model": "deepseek-chat",
-    "messages": [{"role": "user", "content": "你好"}],
+      curl: `curl ${apiBaseUrl}/chat/completions \\\n+  -H "Authorization: Bearer $TOKENFLOW_API_KEY" \\\n+  -H "Content-Type: application/json" \\\n+  -d '{
+    "model": "qwen-max",
+    "messages": [{"role": "user", "content": "请为新品写一段发布文案"}],
     "stream": true
   }'`,
       python: `import os
@@ -88,8 +143,8 @@ response = requests.post(
         "Content-Type": "application/json",
     },
     json={
-        "model": "deepseek-chat",
-        "messages": [{"role": "user", "content": "你好"}],
+        "model": "qwen-max",
+        "messages": [{"role": "user", "content": "请为新品写一段发布文案"}],
     },
     timeout=60,
 )
@@ -103,8 +158,8 @@ print(response.json())`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      model: "deepseek-chat",
-      messages: [{ role: "user", content: "你好" }],
+      model: "qwen-max",
+      messages: [{ role: "user", content: "请为新品写一段发布文案" }],
     }),
   },
 )
@@ -133,26 +188,35 @@ console.log(await response.json())`,
               <p className='text-muted-foreground mb-3 px-3 text-xs font-semibold uppercase'>
                 {t('Developer docs')}
               </p>
+              <DocNavLink href='#overview' label={t('Overview')} />
+              <DocNavLink href='#scenarios' label={t('Enterprise scenarios')} />
               <DocNavLink href='#quick-start' label={t('Quick start')} />
               <DocNavLink href='#authentication' label={t('Authentication')} />
-              <DocNavLink href='#chat' label={t('Chat completions')} />
+              <DocNavLink href='#api-surface' label={t('API surface')} />
               <DocNavLink href='#models' label={t('Domestic model guide')} />
+              <DocNavLink
+                href='#governance'
+                label={t('Enterprise governance')}
+              />
               <DocNavLink href='#errors' label={t('Error handling')} />
             </nav>
           </aside>
 
           <article className='min-w-0'>
-            <header className='border-border border-b pb-12'>
+            <header
+              id='overview'
+              className='border-border scroll-mt-24 border-b pb-12'
+            >
               <div className='text-muted-foreground mb-5 flex items-center gap-2 font-mono text-xs uppercase'>
                 <span className='size-2 rounded-full bg-[#66806a]' />
-                {TOKEN_FLOW_BRAND} · API v1
+                {t('TokenFlow API · Enterprise AI Gateway')}
               </div>
-              <h1 className='max-w-3xl text-4xl leading-tight font-semibold sm:text-5xl'>
-                {t('Integrate domestic models through one stable API')}
+              <h1 className='max-w-4xl text-4xl leading-tight font-semibold tracking-tight sm:text-6xl'>
+                {t('Put every AI production workflow behind one gateway')}
               </h1>
-              <p className='text-muted-foreground mt-5 max-w-2xl text-base leading-8'>
+              <p className='text-muted-foreground mt-5 max-w-3xl text-base leading-8'>
                 {t(
-                  'Use one API key to manage authentication, routing, usage, and billing for domestic model requests.'
+                  'TokenFlow API gives enterprise teams one stable interface for domestic text, image, video, speech, and embedding models, with unified keys, routing, quotas, billing, and operational visibility.'
                 )}
               </p>
               <div className='mt-7 flex flex-wrap gap-3'>
@@ -169,6 +233,13 @@ console.log(await response.json())`,
                   {t('View model pricing')}
                 </Link>
               </div>
+              <div className='text-muted-foreground mt-8 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs'>
+                <span>{t('Text generation')}</span>
+                <span>{t('Image generation')}</span>
+                <span>{t('Video tasks')}</span>
+                <span>{t('Speech')}</span>
+                <span>{t('Embeddings')}</span>
+              </div>
             </header>
 
             <div className='border-border flex flex-wrap items-center gap-x-8 gap-y-3 border-b py-5 font-mono text-xs'>
@@ -176,11 +247,37 @@ console.log(await response.json())`,
               <code className='text-foreground break-all'>{apiBaseUrl}</code>
               <span className='ml-auto flex items-center gap-2 text-[#66806a] dark:text-[#8ca68f]'>
                 <CheckCircle2 className='size-4' />{' '}
-                {t('Unified request format')}
+                {t('OpenAI-compatible gateway')}
               </span>
             </div>
 
-            <DocSection id='quick-start' eyebrow='01' title={t('Quick start')}>
+            <DocSection
+              id='scenarios'
+              eyebrow='01'
+              title={t('Enterprise scenarios')}
+            >
+              <p className='text-muted-foreground mb-6 max-w-3xl text-sm leading-7'>
+                {t(
+                  'Designed for teams that turn AI capability into repeatable business workflows, not one-off experiments.'
+                )}
+              </p>
+              <div className='bg-border grid gap-px overflow-hidden rounded-md border sm:grid-cols-2'>
+                {ENTERPRISE_SCENARIOS.map(([id, Icon, title, text]) => (
+                  <div key={id} className='bg-background min-h-48 p-5'>
+                    <Icon
+                      className='size-5 text-[#d85f3f]'
+                      aria-hidden='true'
+                    />
+                    <h3 className='mt-8 font-semibold'>{t(title)}</h3>
+                    <p className='text-muted-foreground mt-2 text-sm leading-6'>
+                      {t(text)}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </DocSection>
+
+            <DocSection id='quick-start' eyebrow='02' title={t('Quick start')}>
               <div className='bg-border grid gap-px overflow-hidden rounded-md border md:grid-cols-3'>
                 <QuickStep
                   icon={<KeyRound />}
@@ -201,7 +298,7 @@ console.log(await response.json())`,
                   number='03'
                   title={t('Send your first request')}
                   text={t(
-                    'Start with deepseek-chat, then switch models by task.'
+                    'Start with qwen-max or deepseek-chat, then switch models by task.'
                   )}
                 />
               </div>
@@ -209,7 +306,7 @@ console.log(await response.json())`,
 
             <DocSection
               id='authentication'
-              eyebrow='02'
+              eyebrow='03'
               title={t('Authentication')}
             >
               <div className='border-border grid gap-8 border-y py-7 md:grid-cols-[1fr_1.1fr]'>
@@ -235,8 +332,58 @@ console.log(await response.json())`,
               </p>
             </DocSection>
 
-            <DocSection id='chat' eyebrow='03' title={t('Chat completions')}>
+            <DocSection id='api-surface' eyebrow='04' title={t('API surface')}>
               <div className='border-border overflow-hidden rounded-md border'>
+                {API_SURFACE.map(([method, endpoint, purpose]) => (
+                  <div
+                    key={endpoint}
+                    className='border-border grid gap-2 border-b px-4 py-4 text-sm last:border-b-0 md:grid-cols-[64px_250px_1fr]'
+                  >
+                    <strong className='font-mono text-xs text-[#d85f3f]'>
+                      {method}
+                    </strong>
+                    <code className='font-mono text-xs'>{endpoint}</code>
+                    <span className='text-muted-foreground'>{t(purpose)}</span>
+                  </div>
+                ))}
+              </div>
+              <div className='border-border mt-8 overflow-hidden rounded-md border'>
+                <div className='border-border bg-muted/30 flex items-center justify-between border-b px-4 py-3'>
+                  <div>
+                    <p className='font-mono text-xs uppercase'>
+                      {t('Video task example')}
+                    </p>
+                    <p className='text-muted-foreground mt-1 text-xs'>
+                      {t(
+                        'Video generation is asynchronous: create a task, poll its status, then download the result.'
+                      )}
+                    </p>
+                  </div>
+                  <Clapperboard
+                    className='size-5 text-[#d85f3f]'
+                    aria-hidden='true'
+                  />
+                </div>
+                <pre className='overflow-x-auto bg-[#171816] p-5 font-mono text-xs leading-6 text-[#f2f2ec]'>
+                  <code>{`curl ${apiBaseUrl}/videos \\
+  -H "Authorization: Bearer $TOKENFLOW_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "video-model-alias",
+    "prompt": "为新品制作一段 10 秒产品展示视频",
+    "seconds": 10
+  }'
+
+# Response returns a video task ID
+curl ${apiBaseUrl}/videos/{video_id} \\
+  -H "Authorization: Bearer $TOKENFLOW_API_KEY"`}</code>
+                </pre>
+              </div>
+
+              <h3 className='mt-10 text-lg font-semibold'>
+                {t('Chat completions')}
+              </h3>
+              <div className='border-border mt-4 overflow-hidden rounded-md border'>
                 <div className='border-border bg-muted/30 flex items-center justify-between gap-3 border-b px-3 py-2'>
                   <div className='flex items-center gap-1' role='tablist'>
                     {CODE_LANGUAGES.map((item) => (
@@ -275,29 +422,11 @@ console.log(await response.json())`,
                   <code>{codeExamples[language]}</code>
                 </pre>
               </div>
-
-              <h3 className='mt-10 text-lg font-semibold'>
-                {t('Available endpoints')}
-              </h3>
-              <div className='border-border mt-4 overflow-hidden rounded-md border'>
-                {ENDPOINTS.map(([method, endpoint, purpose]) => (
-                  <div
-                    key={endpoint}
-                    className='border-border grid gap-2 border-b px-4 py-4 text-sm last:border-b-0 md:grid-cols-[64px_220px_1fr]'
-                  >
-                    <strong className='font-mono text-xs text-[#d85f3f]'>
-                      {method}
-                    </strong>
-                    <code className='font-mono text-xs'>{endpoint}</code>
-                    <span className='text-muted-foreground'>{t(purpose)}</span>
-                  </div>
-                ))}
-              </div>
             </DocSection>
 
             <DocSection
               id='models'
-              eyebrow='04'
+              eyebrow='05'
               title={t('Domestic model guide')}
             >
               <p className='text-muted-foreground mb-6 max-w-2xl text-sm leading-7'>
@@ -306,7 +435,7 @@ console.log(await response.json())`,
                 )}
               </p>
               <div className='border-border overflow-hidden rounded-md border'>
-                {DOMESTIC_MODELS.map(([model, provider, purpose]) => (
+                {MODEL_USE_CASES.map(([model, provider, purpose]) => (
                   <div
                     key={model}
                     className='border-border grid gap-2 border-b px-4 py-4 text-sm last:border-b-0 md:grid-cols-[1.4fr_0.8fr_1.5fr]'
@@ -319,7 +448,44 @@ console.log(await response.json())`,
               </div>
             </DocSection>
 
-            <DocSection id='errors' eyebrow='05' title={t('Error handling')}>
+            <DocSection
+              id='governance'
+              eyebrow='06'
+              title={t('Enterprise governance')}
+            >
+              <div className='grid gap-8 md:grid-cols-2'>
+                <GovernanceItem
+                  icon={<Users />}
+                  title={t('Teams and API keys')}
+                  text={t(
+                    'Separate applications and teams with independent keys, groups, quotas, and access policies.'
+                  )}
+                />
+                <GovernanceItem
+                  icon={<Route />}
+                  title={t('Routing and failover')}
+                  text={t(
+                    'Keep model aliases stable while administrators control upstream channels, priorities, and fallback paths.'
+                  )}
+                />
+                <GovernanceItem
+                  icon={<BarChart3 />}
+                  title={t('Usage and cost visibility')}
+                  text={t(
+                    'Track requests, tokens, media tasks, quotas, and billing records from one operational console.'
+                  )}
+                />
+                <GovernanceItem
+                  icon={<ShieldCheck />}
+                  title={t('Production controls')}
+                  text={t(
+                    'Protect credentials, limit traffic, retain request records, and keep sensitive model access behind the gateway.'
+                  )}
+                />
+              </div>
+            </DocSection>
+
+            <DocSection id='errors' eyebrow='07' title={t('Error handling')}>
               <div className='border-border overflow-hidden rounded-md border'>
                 {ERROR_CODES.map(([code, description]) => (
                   <div
@@ -395,6 +561,22 @@ function QuickStep(props: {
         </span>
       </div>
       <h3 className='mt-10 font-semibold'>{props.title}</h3>
+      <p className='text-muted-foreground mt-2 text-sm leading-6'>
+        {props.text}
+      </p>
+    </div>
+  )
+}
+
+function GovernanceItem(props: {
+  icon: React.ReactNode
+  text: string
+  title: string
+}) {
+  return (
+    <div className='border-border border-t pt-5'>
+      <div className='text-[#66806a] [&>svg]:size-5'>{props.icon}</div>
+      <h3 className='mt-5 font-semibold'>{props.title}</h3>
       <p className='text-muted-foreground mt-2 text-sm leading-6'>
         {props.text}
       </p>
