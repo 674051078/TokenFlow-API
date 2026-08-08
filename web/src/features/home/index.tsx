@@ -21,15 +21,13 @@ import { useTranslation } from 'react-i18next'
 
 import { PublicLayout } from '@/components/layout'
 import { RichContent } from '@/components/rich-content'
+import { TOKEN_FLOW_BRAND, TokenFlowMark } from '@/components/token-flow-mark'
 import { useTheme } from '@/context/theme-provider'
 import { isLikelyHtml } from '@/lib/content-format'
 import { useAuthStore } from '@/stores/auth-store'
 
 import { DomesticLanding } from './components/domestic-landing'
-import { TokenFlowMark } from './components/token-flow-mark'
 import { useHomePageContent } from './hooks'
-
-const TOKEN_FLOW_BRAND = 'TokenFlow API'
 
 export function Home() {
   const { i18n, t } = useTranslation()
@@ -38,7 +36,7 @@ export function Home() {
   const { auth } = useAuthStore()
   const isAuthenticated = !!auth.user
   const { content, isLoaded, isUrl } = useHomePageContent()
-  const docsUrl = 'https://docs.newapi.pro'
+  const docsUrl = '/docs'
   const brandLogo = <TokenFlowMark />
 
   const syncIframePreferences = useCallback(() => {
@@ -145,7 +143,7 @@ export function Home() {
         { title: '首页', href: '/' },
         { title: '模型与价格', href: '/pricing' },
         { title: '控制台', href: '/dashboard', requiresAuth: true },
-        { title: '接入文档', href: docsUrl, external: true },
+        { title: '接入文档', href: docsUrl },
       ]}
       headerProps={{ className: 'public-header--editorial' }}
     >

@@ -551,6 +551,22 @@ export const STATIC_I18N_KEYS = [
   'The model that was requested',
   'The upstream channel that served the requests',
 
+  // Developer docs runtime labels
+  'Chat and reasoning',
+  'List available models',
+  'Create text embeddings',
+  'Chat and coding',
+  'Reasoning tasks',
+  'Long context and Chinese understanding',
+  'General conversation and content',
+  'Long document processing',
+  'Conversation and agent tasks',
+  'Invalid request parameters',
+  'API key is missing or invalid',
+  'Insufficient quota',
+  'Rate limit exceeded',
+  'Upstream service is temporarily unavailable',
+
   // Misc
   'Cancel',
   'Status',

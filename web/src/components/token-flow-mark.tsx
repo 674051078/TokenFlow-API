@@ -20,6 +20,8 @@ import { Waypoints } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
+export const TOKEN_FLOW_BRAND = 'TokenFlow API'
+
 interface TokenFlowMarkProps {
   className?: string
 }

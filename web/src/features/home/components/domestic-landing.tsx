@@ -35,9 +35,9 @@ import {
 } from 'lucide-react'
 
 import { Footer } from '@/components/layout/components/footer'
+import { TokenFlowMark } from '@/components/token-flow-mark'
 
 import './domestic-landing.css'
-import { TokenFlowMark } from './token-flow-mark'
 
 interface DomesticLandingProps {
   brandName: string
