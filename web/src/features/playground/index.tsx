@@ -42,6 +42,7 @@ export function Playground() {
   } = usePlaygroundState()
 
   const { sendChat, stopGeneration, isGenerating } = useChatHandler({
+    availableModels: models,
     config,
     parameterEnabled,
     onMessageUpdate: updateMessages,

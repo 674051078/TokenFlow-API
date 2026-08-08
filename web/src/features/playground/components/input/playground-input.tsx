@@ -16,6 +16,8 @@ along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 For commercial licensing, please contact support@quantumnous.com
 */
+import { Link } from '@tanstack/react-router'
+import { CircleAlertIcon, PlusIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -25,8 +27,11 @@ import {
   PromptInputTextarea,
   type PromptInputMessage,
 } from '@/components/ai-elements/prompt-input'
+import { Button } from '@/components/ui/button'
+import { ROLE } from '@/lib/roles'
+import { useAuthStore } from '@/stores/auth-store'
 
-import { getSubmittableInputText } from '../../lib'
+import { getSubmittableInputText, isPlaygroundModelAvailable } from '../../lib'
 import type {
   ModelOption,
   GroupOption,
@@ -83,9 +88,18 @@ export function PlaygroundInput({
 }: PlaygroundInputProps) {
   const { t } = useTranslation()
   const [text, setText] = useState('')
+  const currentUser = useAuthStore((state) => state.auth.user)
+  const canManageChannels = Boolean(
+    currentUser && currentUser.role >= ROLE.ADMIN
+  )
+  const hasSelectedModel = isPlaygroundModelAvailable(models, modelValue)
+  const showEmptyModelsNotice = !isModelLoading && models.length === 0
 
   const handleSubmit = (message: PromptInputMessage) => {
-    const submittableText = getSubmittableInputText(message, disabled)
+    const submittableText = getSubmittableInputText(
+      message,
+      disabled || !hasSelectedModel
+    )
 
     if (!submittableText) return
     onSubmit(submittableText)
@@ -94,6 +108,43 @@ export function PlaygroundInput({
 
   return (
     <div className='grid shrink-0 gap-4 px-1 md:pb-4'>
+      {showEmptyModelsNotice && (
+        <div
+          className='border-border bg-muted/35 flex items-start gap-3 border-l-2 px-3 py-2.5'
+          role='status'
+        >
+          <CircleAlertIcon
+            aria-hidden='true'
+            className='text-muted-foreground mt-0.5 size-4 shrink-0'
+          />
+          <div className='min-w-0 flex-1'>
+            <p className='text-sm font-medium'>
+              {t('No domestic models are available in this group.')}
+            </p>
+            <p className='text-muted-foreground mt-0.5 text-xs leading-5'>
+              {canManageChannels
+                ? t(
+                    'Add a domestic model channel and its upstream API key before using Playground.'
+                  )
+                : t(
+                    'Ask an administrator to add a domestic model channel before using Playground.'
+                  )}
+            </p>
+          </div>
+          {canManageChannels && (
+            <Button
+              className='shrink-0'
+              render={<Link to='/channels' />}
+              size='sm'
+              variant='outline'
+            >
+              <PlusIcon aria-hidden='true' />
+              {t('Add domestic model')}
+            </Button>
+          )}
+        </div>
+      )}
+
       <PromptInput
         className='relative'
         groupClassName='bg-background/95 dark:bg-background/80 border-border/70 shadow-[0_18px_60px_-32px_rgba(0,0,0,0.65)] ring-1 ring-foreground/5 rounded-xl overflow-hidden transition-all duration-200 focus-within:border-primary/45 focus-within:ring-primary/15 focus-within:shadow-[0_22px_70px_-34px_rgba(0,0,0,0.75)]'

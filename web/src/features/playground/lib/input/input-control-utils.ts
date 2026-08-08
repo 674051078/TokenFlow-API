@@ -24,6 +24,7 @@ type InputControlStateOptions = {
   hasStopHandler: boolean
   isGenerating?: boolean
   isModelLoading?: boolean
+  modelValue: string
   models: ModelOption[]
   text: string
 }
@@ -49,19 +50,27 @@ export function getSubmittableInputText(
   return message.text
 }
 
+export function isPlaygroundModelAvailable(
+  models: ModelOption[],
+  modelValue: string
+): boolean {
+  return models.some((model) => model.value === modelValue)
+}
+
 export function getInputControlState({
   disabled,
   groups,
   hasStopHandler,
   isGenerating,
   isModelLoading,
+  modelValue,
   models,
   text,
 }: InputControlStateOptions): InputControlState {
-  const hasModels = models.length > 0
+  const hasSelectedModel = isPlaygroundModelAvailable(models, modelValue)
 
   return {
-    canSubmit: !disabled && hasModels && text.trim().length > 0,
+    canSubmit: !disabled && hasSelectedModel && text.trim().length > 0,
     isSelectorDisabled: disabled || isModelLoading || groups.length === 0,
     shouldShowStop: Boolean(isGenerating && hasStopHandler),
   }

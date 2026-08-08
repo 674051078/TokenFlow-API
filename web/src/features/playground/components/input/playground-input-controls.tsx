@@ -63,6 +63,7 @@ export function PlaygroundInputControls({
       hasStopHandler: Boolean(onStop),
       isGenerating,
       isModelLoading,
+      modelValue,
       models,
       text,
     })

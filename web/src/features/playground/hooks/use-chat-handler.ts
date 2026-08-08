@@ -34,10 +34,16 @@ import {
   isAssistantMessageFinal,
   isAssistantMessagePending,
 } from '../lib'
-import type { Message, PlaygroundConfig, ParameterEnabled } from '../types'
+import type {
+  Message,
+  ModelOption,
+  PlaygroundConfig,
+  ParameterEnabled,
+} from '../types'
 import { useStreamRequest } from './use-stream-request'
 
 interface UseChatHandlerOptions {
+  availableModels: ModelOption[]
   config: PlaygroundConfig
   parameterEnabled: ParameterEnabled
   onMessageUpdate: (updater: (prev: Message[]) => Message[]) => void
@@ -67,6 +73,7 @@ function mergePendingStreamChunk(
  * Hook for handling chat message sending and receiving
  */
 export function useChatHandler({
+  availableModels,
   config,
   parameterEnabled,
   onMessageUpdate,
@@ -347,14 +354,31 @@ export function useChatHandler({
 
   // Send chat request (stream or non-stream based on config)
   const sendChat = useCallback(
-    (messages: Message[]) => {
+    (messages: Message[]): boolean => {
+      const hasSelectedModel = availableModels.some(
+        (model) => model.value === config.model
+      )
+      if (!hasSelectedModel) {
+        toast.error(t('Select an available model before sending.'))
+        return false
+      }
+
       if (config.stream) {
         sendStreamingChat(messages)
       } else {
         sendNonStreamingChat(messages)
       }
+
+      return true
     },
-    [config.stream, sendStreamingChat, sendNonStreamingChat]
+    [
+      availableModels,
+      config.model,
+      config.stream,
+      sendStreamingChat,
+      sendNonStreamingChat,
+      t,
+    ]
   )
 
   // Stop generation

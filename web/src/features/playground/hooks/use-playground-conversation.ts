@@ -31,7 +31,7 @@ type UsePlaygroundConversationOptions = {
   updateMessages: (
     updater: Message[] | ((prev: Message[]) => Message[])
   ) => void
-  sendChat: (messages: Message[]) => void
+  sendChat: (messages: Message[]) => boolean
 }
 
 export function usePlaygroundConversation({
@@ -46,8 +46,9 @@ export function usePlaygroundConversation({
   const handleSendMessage = useCallback(
     (text: string) => {
       const nextMessages = appendUserMessagePair(messages, text)
+      if (!sendChat(nextMessages)) return
+
       updateMessages(nextMessages)
-      sendChat(nextMessages)
     },
     [messages, updateMessages, sendChat]
   )
@@ -56,9 +57,9 @@ export function usePlaygroundConversation({
     (message: Message) => {
       const nextMessages = createRegeneratedMessages(messages, message.key)
       if (!nextMessages) return
+      if (!sendChat(nextMessages)) return
 
       updateMessages(nextMessages)
-      sendChat(nextMessages)
     },
     [messages, updateMessages, sendChat]
   )
@@ -84,13 +85,10 @@ export function usePlaygroundConversation({
         shouldSubmit
       )
       if (!editResult) return
+      if (editResult.shouldSend && !sendChat(editResult.messages)) return
 
       setEditingMessageKey(null)
       updateMessages(editResult.messages)
-
-      if (editResult.shouldSend) {
-        sendChat(editResult.messages)
-      }
     },
     [editingMessageKey, messages, updateMessages, sendChat]
   )

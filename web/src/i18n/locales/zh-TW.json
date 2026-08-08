@@ -5284,6 +5284,11 @@
     "Zero retention": "零數據保留",
     "Zhipu": "智譜",
     "Zhipu V4": "智譜 V4",
-    "Zoom": "縮放"
+    "Zoom": "縮放",
+    "Add a domestic model channel and its upstream API key before using Playground.": "新增國內模型渠道並填寫上游 API Key 後，即可使用調試台。",
+    "Add domestic model": "新增國內模型",
+    "Ask an administrator to add a domestic model channel before using Playground.": "請聯絡管理員新增國內模型渠道後再使用調試台。",
+    "No domestic models are available in this group.": "目前分組暫無可用的國內模型。",
+    "Select an available model before sending.": "傳送前請選擇一個可用模型。"
   }
 }

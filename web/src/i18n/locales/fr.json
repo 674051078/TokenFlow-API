@@ -5284,6 +5284,11 @@
     "Zero retention": "Aucune rétention",
     "Zhipu": "Zhipu",
     "Zhipu V4": "Zhipu V4",
-    "Zoom": "Zoom"
+    "Zoom": "Zoom",
+    "Add a domestic model channel and its upstream API key before using Playground.": "Ajoutez un canal de modèle chinois et sa clé API en amont avant d'utiliser Playground.",
+    "Add domestic model": "Ajouter un modèle chinois",
+    "Ask an administrator to add a domestic model channel before using Playground.": "Demandez à un administrateur d'ajouter un canal de modèle chinois avant d'utiliser Playground.",
+    "No domestic models are available in this group.": "Aucun modèle chinois n'est disponible dans ce groupe.",
+    "Select an available model before sending.": "Sélectionnez un modèle disponible avant l'envoi."
   }
 }

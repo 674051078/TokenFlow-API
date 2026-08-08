@@ -5284,6 +5284,11 @@
     "Zero retention": "Không lưu dữ liệu",
     "Zhipu": "Zhipu",
     "Zhipu V4": "Zhipu V4",
-    "Zoom": "Zoom"
+    "Zoom": "Zoom",
+    "Add a domestic model channel and its upstream API key before using Playground.": "Thêm kênh mô hình nội địa Trung Quốc và khóa API thượng nguồn trước khi sử dụng Playground.",
+    "Add domestic model": "Thêm mô hình nội địa",
+    "Ask an administrator to add a domestic model channel before using Playground.": "Hãy yêu cầu quản trị viên thêm kênh mô hình nội địa Trung Quốc trước khi sử dụng Playground.",
+    "No domestic models are available in this group.": "Không có mô hình nội địa Trung Quốc khả dụng trong nhóm này.",
+    "Select an available model before sending.": "Hãy chọn một mô hình khả dụng trước khi gửi."
   }
 }
