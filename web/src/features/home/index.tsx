@@ -20,13 +20,12 @@ import { useCallback, useEffect, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { PublicLayout } from '@/components/layout'
-import { Footer } from '@/components/layout/components/footer'
 import { RichContent } from '@/components/rich-content'
 import { useTheme } from '@/context/theme-provider'
 import { isLikelyHtml } from '@/lib/content-format'
 import { useAuthStore } from '@/stores/auth-store'
 
-import { CTA, Features, Hero, HowItWorks, Stats } from './components'
+import { DomesticLanding } from './components/domestic-landing'
 import { useHomePageContent } from './hooks'
 
 export function Home() {
@@ -36,6 +35,7 @@ export function Home() {
   const { auth } = useAuthStore()
   const isAuthenticated = !!auth.user
   const { content, isLoaded, isUrl } = useHomePageContent()
+  const docsUrl = 'https://docs.newapi.pro'
 
   const syncIframePreferences = useCallback(() => {
     try {
@@ -121,13 +121,17 @@ export function Home() {
   }
 
   return (
-    <PublicLayout showMainContainer={false}>
-      <Hero isAuthenticated={isAuthenticated} />
-      <Stats />
-      <Features />
-      <HowItWorks />
-      <CTA isAuthenticated={isAuthenticated} />
-      <Footer />
+    <PublicLayout
+      showMainContainer={false}
+      navLinks={[
+        { title: '首页', href: '/' },
+        { title: '模型与价格', href: '/pricing' },
+        { title: '控制台', href: '/dashboard', requiresAuth: true },
+        { title: '接入文档', href: docsUrl, external: true },
+      ]}
+      headerProps={{ className: 'public-header--editorial' }}
+    >
+      <DomesticLanding docsUrl={docsUrl} isAuthenticated={isAuthenticated} />
     </PublicLayout>
   )
 }
