@@ -29,7 +29,7 @@ import { DomesticLanding } from './components/domestic-landing'
 import { TokenFlowMark } from './components/token-flow-mark'
 import { useHomePageContent } from './hooks'
 
-const TOKEN_FLOW_BRAND = 'Token Flow'
+const TOKEN_FLOW_BRAND = 'TokenFlow API'
 
 export function Home() {
   const { i18n, t } = useTranslation()
