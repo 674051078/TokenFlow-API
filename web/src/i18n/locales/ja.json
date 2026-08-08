@@ -5443,6 +5443,7 @@
     "Succeeded": "Succeeded",
     "Read the result URL or output object, then download the asset from the returned endpoint.": "Read the result URL or output object, then download the asset from the returned endpoint.",
     "Keep the task ID and request ID, read the error detail, and fix the model or input before retrying.": "Keep the task ID and request ID, read the error detail, and fix the model or input before retrying.",
-    "Check the request ID, API key status, remaining quota, model access, request parameters, and upstream channel status in that order.": "Check the request ID, API key status, remaining quota, model access, request parameters, and upstream channel status in that order."
+    "Check the request ID, API key status, remaining quota, model access, request parameters, and upstream channel status in that order.": "Check the request ID, API key status, remaining quota, model access, request parameters, and upstream channel status in that order.",
+    "Select an official API reference": "Select an official API reference"
   }
 }

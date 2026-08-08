@@ -35,7 +35,7 @@ import {
   Users,
   Video,
 } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { PublicLayout } from '@/components/layout'
@@ -355,7 +355,12 @@ export function DeveloperDocs() {
   const { t } = useTranslation()
   const [language, setLanguage] = useState<CodeLanguage>('curl')
   const [copied, setCopied] = useState(false)
+  const [selectedProvider, setSelectedProvider] = useState('qwen')
+  const [activeSection, setActiveSection] = useState('overview')
   const apiBaseUrl = `${window.location.origin}/v1`
+  const selectedProviderGroup =
+    OFFICIAL_DOC_GROUPS.find((group) => group.id === selectedProvider) ??
+    OFFICIAL_DOC_GROUPS[0]
   const codeExamples = useMemo(
     () => ({
       curl: `curl ${apiBaseUrl}/chat/completions \\\n+  -H "Authorization: Bearer $TOKENFLOW_API_KEY" \\\n+  -H "Content-Type: application/json" \\\n+  -d '{
@@ -405,6 +410,35 @@ console.log(await response.json())`,
     window.setTimeout(() => setCopied(false), 1600)
   }
 
+  useEffect(() => {
+    const sectionIds = DOC_NAV_ITEMS.map(([href]) => href.slice(1))
+    const sections = sectionIds
+      .map((id) => document.querySelector<HTMLElement>(`#${id}`))
+      .filter((section): section is HTMLElement => section !== null)
+
+    const updateActiveSection = () => {
+      const marker = window.scrollY + 140
+      let currentSection = sectionIds[0]
+      for (const section of sections) {
+        if (section.offsetTop <= marker) currentSection = section.id
+      }
+      setActiveSection(currentSection)
+    }
+
+    updateActiveSection()
+    window.addEventListener('scroll', updateActiveSection, { passive: true })
+    window.addEventListener('hashchange', updateActiveSection)
+    return () => {
+      window.removeEventListener('scroll', updateActiveSection)
+      window.removeEventListener('hashchange', updateActiveSection)
+    }
+  }, [])
+
+  const selectProvider = (providerId: string) => {
+    setSelectedProvider(providerId)
+    window.history.replaceState(null, '', `#provider-${providerId}`)
+  }
+
   return (
     <PublicLayout
       logo={<TokenFlowMark />}
@@ -419,7 +453,12 @@ console.log(await response.json())`,
                 {t('Developer docs')}
               </p>
               {DOC_NAV_ITEMS.map(([href, label]) => (
-                <DocNavLink key={href} href={href} label={t(label)} />
+                <DocNavLink
+                  key={href}
+                  href={href}
+                  label={t(label)}
+                  active={activeSection === href.slice(1)}
+                />
               ))}
             </nav>
           </aside>
@@ -431,7 +470,12 @@ console.log(await response.json())`,
               </p>
               <nav className='grid grid-cols-2 gap-1 text-sm'>
                 {DOC_NAV_ITEMS.map(([href, label]) => (
-                  <DocNavLink key={href} href={href} label={t(label)} />
+                  <DocNavLink
+                    key={href}
+                    href={href}
+                    label={t(label)}
+                    active={activeSection === href.slice(1)}
+                  />
                 ))}
               </nav>
             </div>
@@ -766,58 +810,67 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                     'Choose a domestic provider first, then jump to its official API, image, video, or enterprise integration tutorials.'
                   )}
                 </p>
-                <nav className='mt-4 flex flex-wrap gap-2'>
+                <nav
+                  className='mt-4 flex gap-2 overflow-x-auto pb-1'
+                  aria-label={t('Provider directory')}
+                  role='tablist'
+                >
                   {OFFICIAL_DOC_GROUPS.map((group) => (
-                    <a
+                    <button
                       key={group.id}
-                      href={`#provider-${group.id}`}
-                      className='border-border hover:bg-muted rounded-md border px-3 py-2 text-sm transition-colors'
+                      type='button'
+                      role='tab'
+                      aria-selected={selectedProvider === group.id}
+                      aria-controls={`provider-${group.id}`}
+                      onClick={() => selectProvider(group.id)}
+                      className={cn(
+                        'border-border shrink-0 rounded-md border px-3 py-2 text-sm whitespace-nowrap transition-colors',
+                        selectedProvider === group.id
+                          ? 'bg-foreground text-background border-foreground'
+                          : 'hover:bg-muted'
+                      )}
                     >
                       {group.provider}
-                    </a>
+                    </button>
                   ))}
                 </nav>
               </div>
-              <div className='space-y-10'>
-                {OFFICIAL_DOC_GROUPS.map((group) => (
-                  <div
-                    key={group.id}
-                    id={`provider-${group.id}`}
-                    className='scroll-mt-24'
-                  >
-                    <div className='mb-4 flex flex-wrap items-baseline justify-between gap-2'>
-                      <h3 className='text-lg font-semibold'>
-                        {group.provider}
-                      </h3>
+              <div
+                id={`provider-${selectedProviderGroup.id}`}
+                className='scroll-mt-24'
+                role='tabpanel'
+                aria-label={selectedProviderGroup.provider}
+              >
+                <div className='mb-4 flex flex-wrap items-baseline justify-between gap-2'>
+                  <h3 className='text-lg font-semibold'>
+                    {selectedProviderGroup.provider}
+                  </h3>
+                  <span className='text-muted-foreground text-xs'>
+                    {t('Select an official API reference')}
+                  </span>
+                </div>
+                <div className='border-border grid gap-px overflow-hidden rounded-md border sm:grid-cols-2'>
+                  {selectedProviderGroup.docs.map(
+                    ([title, description, href]) => (
                       <a
-                        href='#references'
-                        className='text-muted-foreground hover:text-foreground text-xs transition-colors'
+                        key={href}
+                        href={href}
+                        target='_blank'
+                        rel='noreferrer'
+                        className='bg-background hover:bg-muted/40 group p-5 transition-colors'
                       >
-                        {t('Back to provider directory')}
+                        <div className='text-muted-foreground flex items-center justify-between font-mono text-xs uppercase'>
+                          <span>{selectedProviderGroup.provider}</span>
+                          <ExternalLink className='size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
+                        </div>
+                        <h4 className='mt-8 font-semibold'>{t(title)}</h4>
+                        <p className='text-muted-foreground mt-2 text-sm leading-6'>
+                          {t(description)}
+                        </p>
                       </a>
-                    </div>
-                    <div className='border-border grid gap-px overflow-hidden rounded-md border sm:grid-cols-2'>
-                      {group.docs.map(([title, description, href]) => (
-                        <a
-                          key={href}
-                          href={href}
-                          target='_blank'
-                          rel='noreferrer'
-                          className='bg-background hover:bg-muted/40 group p-5 transition-colors'
-                        >
-                          <div className='text-muted-foreground flex items-center justify-between font-mono text-xs uppercase'>
-                            <span>{group.provider}</span>
-                            <ExternalLink className='size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
-                          </div>
-                          <h4 className='mt-8 font-semibold'>{t(title)}</h4>
-                          <p className='text-muted-foreground mt-2 text-sm leading-6'>
-                            {t(description)}
-                          </p>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                    )
+                  )}
+                </div>
               </div>
             </DocSection>
 
@@ -928,11 +981,15 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
   )
 }
 
-function DocNavLink(props: { href: string; label: string }) {
+function DocNavLink(props: { active?: boolean; href: string; label: string }) {
   return (
     <a
       href={props.href}
-      className='text-muted-foreground hover:bg-muted hover:text-foreground block rounded-md px-3 py-2 transition-colors'
+      className={cn(
+        'text-muted-foreground hover:bg-muted hover:text-foreground block rounded-md px-3 py-2 transition-colors',
+        props.active && 'bg-muted text-foreground font-semibold'
+      )}
+      aria-current={props.active ? 'location' : undefined}
     >
       {props.label}
     </a>

@@ -5443,6 +5443,7 @@
     "Succeeded": "已完成",
     "Read the result URL or output object, then download the asset from the returned endpoint.": "读取结果 URL 或输出对象，再从返回的 Endpoint 下载文件。",
     "Keep the task ID and request ID, read the error detail, and fix the model or input before retrying.": "保留任务 ID 和 request ID，读取错误详情，修正模型或输入后再重试。",
-    "Check the request ID, API key status, remaining quota, model access, request parameters, and upstream channel status in that order.": "按顺序检查 request ID、API Key 状态、剩余额度、模型权限、请求参数和上游渠道状态。"
+    "Check the request ID, API key status, remaining quota, model access, request parameters, and upstream channel status in that order.": "按顺序检查 request ID、API Key 状态、剩余额度、模型权限、请求参数和上游渠道状态。",
+    "Select an official API reference": "請選擇官方 API 參考"
   }
 }

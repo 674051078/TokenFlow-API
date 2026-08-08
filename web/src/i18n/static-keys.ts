@@ -622,6 +622,7 @@ export const STATIC_I18N_KEYS = [
   'Provider directory',
   'Choose a domestic provider first, then jump to its official API, image, video, or enterprise integration tutorials.',
   'Back to provider directory',
+  'Select an official API reference',
   'Doubao / Volcengine Ark',
   'Doubao and Ark documentation center',
   'Find model services, authentication, endpoint configuration, and enterprise deployment guidance.',
