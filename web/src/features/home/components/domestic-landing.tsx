@@ -24,13 +24,17 @@ import {
   BarChart3,
   Check,
   Code2,
+  FileText,
   Gauge,
+  Image,
   KeyRound,
   Layers3,
   Route,
   ShieldCheck,
   SlidersHorizontal,
   TerminalSquare,
+  Users,
+  Video,
   WalletCards,
 } from 'lucide-react'
 
@@ -100,6 +104,33 @@ const CAPABILITIES = [
   'Rerank',
 ] as const
 
+const ENTERPRISE_WORKFLOWS = [
+  {
+    icon: <FileText aria-hidden />,
+    eyebrow: 'CONTENT OPS',
+    title: '内容与营销生产',
+    text: '统一生成商品文案、广告脚本、长文和多版本内容，让团队共享模型策略和额度。',
+  },
+  {
+    icon: <Image aria-hidden />,
+    eyebrow: 'VISUAL STUDIO',
+    title: '图片与视觉资产',
+    text: '接入文生图、图像编辑和参考图工作流，服务商品上新、活动海报和品牌素材。',
+  },
+  {
+    icon: <Video aria-hidden />,
+    eyebrow: 'VIDEO PIPELINE',
+    title: '视频与创意流程',
+    text: '用异步任务统一管理文生视频、图生视频、轮询、下载和失败重试。',
+  },
+  {
+    icon: <Users aria-hidden />,
+    eyebrow: 'TEAM AI',
+    title: '知识库与业务助手',
+    text: '为客服、销售和内部知识库提供可控的模型访问、日志追踪和成本边界。',
+  },
+] as const
+
 const REQUEST_LOGS = [
   ['10:42:18', 'deepseek-reasoner', '200', '682ms'],
   ['10:42:21', 'qwen-max', '200', '441ms'],
@@ -122,14 +153,15 @@ export function DomesticLanding(props: DomesticLandingProps) {
             </div>
 
             <h1 id='landing-title'>
-              国内大模型
+              企业 AI 生产链路
               <br />
-              <span>统一 API 网关</span>
+              <span>统一接入一个网关</span>
             </h1>
 
             <p className='nl-lead'>
-              用一套鉴权、路由和计费体系接入 DeepSeek、通义千问、豆包、Kimi、
-              智谱 GLM 与文心。模型可以切换，业务调用方式保持稳定。
+              TokenFlow API 面向需要稳定交付 AI
+              能力的企业团队，统一接入文本、图片、视频、语音与向量模型。
+              用同一套 API Key、路由和计费体系，让模型切换不再牵动业务代码。
             </p>
 
             <div className='nl-actions'>
@@ -161,13 +193,13 @@ export function DomesticLanding(props: DomesticLandingProps) {
 
             <div className='nl-proof-list' aria-label='网关核心能力'>
               <span>
-                <Check aria-hidden /> 统一鉴权
+                <Check aria-hidden /> 一个 API 接入
               </span>
               <span>
-                <Check aria-hidden /> 智能路由
+                <Check aria-hidden /> 国内模型路由
               </span>
               <span>
-                <Check aria-hidden /> 用量可追踪
+                <Check aria-hidden /> 用量与成本可视
               </span>
             </div>
           </div>
@@ -189,12 +221,12 @@ export function DomesticLanding(props: DomesticLandingProps) {
         <div className='nl-shell'>
           <div className='nl-section-heading nl-heading-split'>
             <div>
-              <span className='nl-kicker'>快速接入</span>
-              <h2 id='migration-title'>改两个配置，完成第一次调用</h2>
+              <span className='nl-kicker'>5 MINUTES TO FIRST CALL</span>
+              <h2 id='migration-title'>五分钟接入第一条生产链路</h2>
             </div>
             <p>
-              保留熟悉的请求结构，只需要替换 Base URL 和 API
-              Key，先把一条国内模型链路跑通， 再逐步迁移业务流量。
+              保留熟悉的 OpenAI 兼容请求结构，只需要替换 Base URL 和 API Key。
+              先跑通一条业务请求，再逐步把模型、额度和故障切换收进控制台。
             </p>
           </div>
 
@@ -269,10 +301,12 @@ export function DomesticLanding(props: DomesticLandingProps) {
         <div className='nl-shell'>
           <div className='nl-section-heading nl-heading-split'>
             <div>
-              <span className='nl-kicker'>国内模型矩阵</span>
-              <h2 id='models-title'>把模型选择变成清晰、可控的路由</h2>
+              <span className='nl-kicker'>DOMESTIC MODEL CATALOG</span>
+              <h2 id='models-title'>按任务选模型，按策略管路由</h2>
             </div>
-            <p>按任务类型选择上游，统一管理模型别名、分组、倍率和故障切换。</p>
+            <p>
+              从文本、视觉到视频和知识库能力，统一管理模型别名、分组、倍率与故障切换。
+            </p>
           </div>
 
           <div className='nl-model-rail'>
@@ -300,13 +334,43 @@ export function DomesticLanding(props: DomesticLandingProps) {
       </section>
 
       <section
+        className='nl-section nl-workflows'
+        aria-labelledby='workflows-title'
+      >
+        <div className='nl-shell'>
+          <div className='nl-section-heading nl-heading-split'>
+            <div>
+              <span className='nl-kicker'>BUILT FOR BUSINESS</span>
+              <h2 id='workflows-title'>从模型能力，到可复用的业务流程</h2>
+            </div>
+            <p>
+              面向企业真实生产场景设计。每个团队都能使用自己的 API
+              Key、模型范围、额度和成本策略。
+            </p>
+          </div>
+
+          <div className='nl-workflow-grid'>
+            {ENTERPRISE_WORKFLOWS.map((workflow) => (
+              <article className='nl-workflow-card' key={workflow.title}>
+                <div className='nl-workflow-icon'>{workflow.icon}</div>
+                <span>{workflow.eyebrow}</span>
+                <h3>{workflow.title}</h3>
+                <p>{workflow.text}</p>
+                <ArrowRight aria-hidden />
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
         className='nl-section nl-control'
         aria-labelledby='control-title'
       >
         <div className='nl-shell nl-control-grid'>
           <div className='nl-control-copy'>
             <span className='nl-kicker'>CONTROL PLANE</span>
-            <h2 id='control-title'>API 不只是转发，更要能运营</h2>
+            <h2 id='control-title'>让模型调用可运营、可审计、可扩展</h2>
             <p className='nl-control-lead'>
               从第一次请求开始记录路由、延迟、消耗和异常，让每一笔模型成本都有来源，让每一次故障都有线索。
             </p>
@@ -451,8 +515,11 @@ export function DomesticLanding(props: DomesticLandingProps) {
       <section className='nl-final-cta' aria-labelledby='cta-title'>
         <div className='nl-shell'>
           <span className='nl-kicker'>READY WHEN YOU ARE</span>
-          <h2 id='cta-title'>从一个 API Key 开始，接入国内模型能力</h2>
-          <p>先跑通一条请求，再把路由、成本和团队权限逐步收进同一个控制面。</p>
+          <h2 id='cta-title'>把国内模型能力接进真实业务</h2>
+          <p>
+            从一个 API Key
+            开始，先跑通一条请求，再把路由、成本和团队权限逐步收进同一个控制面。
+          </p>
           <div className='nl-actions nl-actions-center'>
             <Link
               to={props.isAuthenticated ? '/dashboard' : '/sign-up'}

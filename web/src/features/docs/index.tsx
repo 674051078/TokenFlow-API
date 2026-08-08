@@ -257,9 +257,76 @@ const MODEL_USE_CASES = [
   ['deepseek-chat', 'DeepSeek', 'Chat and coding'],
   ['deepseek-reasoner', 'DeepSeek', 'Reasoning tasks'],
   ['qwen-max', 'Qwen', 'Long context and Chinese understanding'],
+  ['qwen-image', 'Qwen', 'Text to image'],
+  ['wan-video', 'Qwen', 'Text to video'],
   ['doubao-seed-1-6', 'Doubao', 'General conversation and content'],
+  ['doubao-vision', 'Doubao', 'Multimodal understanding'],
   ['moonshot-v1-128k', 'Kimi', 'Long document processing'],
   ['glm-4.5', 'GLM', 'Conversation and agent tasks'],
+  ['ernie-4.0-8k', 'Baidu Qianfan', 'Enterprise content and knowledge'],
+  ['abab6.5s-chat', 'MiniMax', 'Conversation and content generation'],
+  ['hunyuan-lite', 'Tencent Hunyuan', 'General text generation'],
+] as const
+
+const MODEL_CATALOG = [
+  {
+    id: 'qwen',
+    provider: 'Qwen',
+    tagline: '文本、图片、视频与长上下文',
+    models: [
+      ['qwen-max', '企业文本生成与长上下文'],
+      ['qwen-image', '文生图与视觉素材'],
+      ['wan-video', '文生视频与异步任务'],
+    ],
+  },
+  {
+    id: 'deepseek',
+    provider: 'DeepSeek',
+    tagline: '推理、编码与结构化输出',
+    models: [
+      ['deepseek-chat', '通用对话与代码生成'],
+      ['deepseek-reasoner', '复杂推理与分析任务'],
+    ],
+  },
+  {
+    id: 'doubao',
+    provider: 'Doubao / 火山方舟',
+    tagline: '对话、视觉与企业内容',
+    models: [
+      ['doubao-seed-1-6', '通用对话与内容生成'],
+      ['doubao-vision', '图片理解与多模态输入'],
+    ],
+  },
+  {
+    id: 'kimi',
+    provider: 'Kimi / Moonshot AI',
+    tagline: '长文本、文档与知识处理',
+    models: [['moonshot-v1-128k', '长文档分析与知识问答']],
+  },
+  {
+    id: 'glm',
+    provider: 'GLM / 智谱 AI',
+    tagline: '对话、智能体与工具调用',
+    models: [['glm-4.5', '对话、推理与 Agent 工作流']],
+  },
+  {
+    id: 'qianfan',
+    provider: '百度千帆',
+    tagline: '企业知识、内容与多模态',
+    models: [['ernie-4.0-8k', '企业内容生成与知识问答']],
+  },
+  {
+    id: 'minimax',
+    provider: 'MiniMax',
+    tagline: '文本、语音、图片与视频',
+    models: [['abab6.5s-chat', '对话与内容生成']],
+  },
+  {
+    id: 'hunyuan',
+    provider: '腾讯混元',
+    tagline: '文本、图片与视频任务',
+    models: [['hunyuan-lite', '通用文本生成与企业助手']],
+  },
 ] as const
 
 const DOC_NAV_ITEMS = [
@@ -351,6 +418,24 @@ const TASK_STATUS_GUIDE = [
   ],
 ] as const
 
+const RETRY_GUIDES = [
+  [
+    'Fix before retrying',
+    '400 / 401 / 404',
+    'Correct the request body, API key, endpoint, or model alias first. Repeating the same request will not resolve a validation or permission error.',
+  ],
+  [
+    'Retry with backoff',
+    '408 / 429 / 502 / 503',
+    'Use a bounded exponential backoff, respect Retry-After when present, and keep the original request ID for support and tracing.',
+  ],
+  [
+    'Inspect the gateway',
+    '402 / 500',
+    'Check quota, model access, channel health, and server logs. For media tasks, query the existing task before creating a duplicate.',
+  ],
+] as const
+
 export function DeveloperDocs() {
   const { t } = useTranslation()
   const [language, setLanguage] = useState<CodeLanguage>('curl')
@@ -361,6 +446,9 @@ export function DeveloperDocs() {
   const selectedProviderGroup =
     OFFICIAL_DOC_GROUPS.find((group) => group.id === selectedProvider) ??
     OFFICIAL_DOC_GROUPS[0]
+  const selectedModelCatalog =
+    MODEL_CATALOG.find((group) => group.id === selectedProvider) ??
+    MODEL_CATALOG[0]
   const codeExamples = useMemo(
     () => ({
       curl: `curl ${apiBaseUrl}/chat/completions \\\n+  -H "Authorization: Bearer $TOKENFLOW_API_KEY" \\\n+  -H "Content-Type: application/json" \\\n+  -d '{
@@ -484,7 +572,7 @@ console.log(await response.json())`,
               className='border-border scroll-mt-24 border-b pb-12'
             >
               <div className='text-muted-foreground mb-5 flex items-center gap-2 font-mono text-xs uppercase'>
-                <span className='size-2 rounded-full bg-[#66806a]' />
+                <span className='size-2 rounded-full bg-[#2f6f4e]' />
                 {t('TokenFlow API · Enterprise AI Gateway')}
               </div>
               <h1 className='max-w-4xl text-4xl leading-tight font-semibold tracking-tight sm:text-6xl'>
@@ -521,7 +609,7 @@ console.log(await response.json())`,
             <div className='border-border flex flex-wrap items-center gap-x-8 gap-y-3 border-b py-5 font-mono text-xs'>
               <span className='text-muted-foreground'>{t('Base URL')}</span>
               <code className='text-foreground break-all'>{apiBaseUrl}</code>
-              <span className='ml-auto flex items-center gap-2 text-[#66806a] dark:text-[#8ca68f]'>
+              <span className='ml-auto flex items-center gap-2 text-[#2f6f4e] dark:text-[#74a989]'>
                 <CheckCircle2 className='size-4' />{' '}
                 {t('OpenAI-compatible gateway')}
               </span>
@@ -541,7 +629,7 @@ console.log(await response.json())`,
                 {ENTERPRISE_SCENARIOS.map(([id, Icon, title, text]) => (
                   <div key={id} className='bg-background min-h-48 p-5'>
                     <Icon
-                      className='size-5 text-[#d85f3f]'
+                      className='size-5 text-[#2f6f4e] dark:text-[#74a989]'
                       aria-hidden='true'
                     />
                     <h3 className='mt-8 font-semibold'>{t(title)}</h3>
@@ -587,7 +675,7 @@ console.log(await response.json())`,
             >
               <div className='border-border grid gap-8 border-y py-7 md:grid-cols-[1fr_1.1fr]'>
                 <div>
-                  <div className='mb-4 flex size-9 items-center justify-center rounded-md bg-[#66806a]/10 text-[#66806a] dark:text-[#8ca68f]'>
+                  <div className='mb-4 flex size-9 items-center justify-center rounded-md bg-[#2f6f4e]/10 text-[#2f6f4e] dark:text-[#74a989]'>
                     <ShieldCheck className='size-5' />
                   </div>
                   <p className='text-muted-foreground text-sm leading-7'>
@@ -601,7 +689,7 @@ console.log(await response.json())`,
                 </pre>
               </div>
               <p className='text-muted-foreground mt-4 flex items-start gap-2 text-sm leading-6'>
-                <Check className='mt-1 size-4 shrink-0 text-[#66806a]' />
+                <Check className='mt-1 size-4 shrink-0 text-[#2f6f4e] dark:text-[#74a989]' />
                 {t(
                   'Never expose API keys in browser code or public repositories.'
                 )}
@@ -615,7 +703,7 @@ console.log(await response.json())`,
                     key={endpoint}
                     className='border-border grid gap-2 border-b px-4 py-4 text-sm last:border-b-0 md:grid-cols-[64px_250px_1fr]'
                   >
-                    <strong className='font-mono text-xs text-[#d85f3f]'>
+                    <strong className='font-mono text-xs text-[#2f6f4e] dark:text-[#74a989]'>
                       {method}
                     </strong>
                     <code className='font-mono text-xs'>{endpoint}</code>
@@ -636,7 +724,7 @@ console.log(await response.json())`,
                     </p>
                   </div>
                   <Clapperboard
-                    className='size-5 text-[#d85f3f]'
+                    className='size-5 text-[#2f6f4e] dark:text-[#74a989]'
                     aria-hidden='true'
                   />
                 </div>
@@ -776,14 +864,74 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
             >
               <p className='text-muted-foreground mb-6 max-w-2xl text-sm leading-7'>
                 {t(
-                  'Choose a model by task and keep the request format unchanged.'
+                  'Choose a domestic provider and model alias by task. Your application keeps the same request format when the route changes.'
                 )}
               </p>
               <div className='border-border overflow-hidden rounded-md border'>
+                <nav
+                  className='border-border flex gap-2 overflow-x-auto border-b p-3'
+                  aria-label={t('Domestic model providers')}
+                  role='tablist'
+                >
+                  {MODEL_CATALOG.map((group) => (
+                    <button
+                      key={group.id}
+                      type='button'
+                      role='tab'
+                      aria-selected={selectedProvider === group.id}
+                      onClick={() => setSelectedProvider(group.id)}
+                      className={cn(
+                        'shrink-0 rounded-md border px-3 py-2 text-sm whitespace-nowrap transition-colors',
+                        selectedProvider === group.id
+                          ? 'border-foreground bg-foreground text-background'
+                          : 'border-border hover:bg-muted'
+                      )}
+                    >
+                      {group.provider}
+                    </button>
+                  ))}
+                </nav>
+                <div className='bg-muted/20 border-border flex flex-wrap items-center justify-between gap-3 border-b px-4 py-4'>
+                  <div>
+                    <h3 className='font-semibold'>
+                      {selectedModelCatalog.provider}
+                    </h3>
+                    <p className='text-muted-foreground mt-1 text-sm'>
+                      {selectedModelCatalog.tagline}
+                    </p>
+                  </div>
+                  <a
+                    href='#references'
+                    onClick={() => setSelectedProvider(selectedModelCatalog.id)}
+                    className='text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm'
+                  >
+                    {t('View official references')}{' '}
+                    <ArrowRight className='size-4' />
+                  </a>
+                </div>
+                <div className='bg-border grid gap-px sm:grid-cols-2'>
+                  {selectedModelCatalog.models.map(([model, purpose]) => (
+                    <div key={model} className='bg-background min-h-28 p-4'>
+                      <code className='font-mono text-xs text-[#2f6f4e] dark:text-[#74a989]'>
+                        {model}
+                      </code>
+                      <p className='text-muted-foreground mt-4 text-sm'>
+                        {purpose}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className='border-border mt-6 overflow-hidden rounded-md border'>
+                <div className='bg-muted/30 text-muted-foreground grid gap-2 border-b px-4 py-3 text-xs font-semibold uppercase md:grid-cols-[1.4fr_0.8fr_1.5fr]'>
+                  <span>{t('Recommended aliases')}</span>
+                  <span>{t('Provider')}</span>
+                  <span>{t('Best for')}</span>
+                </div>
                 {MODEL_USE_CASES.map(([model, provider, purpose]) => (
                   <div
                     key={model}
-                    className='border-border grid gap-2 border-b px-4 py-4 text-sm last:border-b-0 md:grid-cols-[1.4fr_0.8fr_1.5fr]'
+                    className='border-border grid gap-2 border-b px-4 py-3 text-sm last:border-b-0 md:grid-cols-[1.4fr_0.8fr_1.5fr]'
                   >
                     <code className='font-mono text-xs'>{model}</code>
                     <strong>{provider}</strong>
@@ -951,6 +1099,19 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                   )}
                 </p>
               </div>
+              <div className='border-border bg-border mt-6 grid gap-px overflow-hidden rounded-md border sm:grid-cols-3'>
+                {RETRY_GUIDES.map(([title, codes, guidance]) => (
+                  <div key={title} className='bg-background min-h-36 p-4'>
+                    <p className='text-muted-foreground font-mono text-xs'>
+                      {codes}
+                    </p>
+                    <h3 className='mt-5 text-sm font-semibold'>{t(title)}</h3>
+                    <p className='text-muted-foreground mt-2 text-xs leading-6'>
+                      {t(guidance)}
+                    </p>
+                  </div>
+                ))}
+              </div>
               <pre className='mt-6 overflow-x-auto rounded-md bg-[#171816] p-5 font-mono text-xs leading-6 text-[#f2f2ec]'>
                 <code>{`{
   "error": {
@@ -1013,7 +1174,9 @@ function QuickStep(props: {
   return (
     <div className='bg-background min-h-52 p-5'>
       <div className='flex items-center justify-between'>
-        <span className='text-[#d85f3f] [&>svg]:size-5'>{props.icon}</span>
+        <span className='text-[#2f6f4e] dark:text-[#74a989] [&>svg]:size-5'>
+          {props.icon}
+        </span>
         <span className='text-muted-foreground font-mono text-xs'>
           {props.number}
         </span>
@@ -1037,7 +1200,9 @@ function GenerationExample(props: {
     <div className='border-border overflow-hidden rounded-md border'>
       <div className='border-border bg-muted/30 flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3'>
         <div className='flex items-center gap-3'>
-          <span className='text-[#d85f3f] [&>svg]:size-5'>{props.icon}</span>
+          <span className='text-[#2f6f4e] dark:text-[#74a989] [&>svg]:size-5'>
+            {props.icon}
+          </span>
           <div>
             <h3 className='font-semibold'>{props.title}</h3>
             <p className='text-muted-foreground mt-1 text-xs'>
@@ -1063,7 +1228,9 @@ function GovernanceItem(props: {
 }) {
   return (
     <div className='border-border border-t pt-5'>
-      <div className='text-[#66806a] [&>svg]:size-5'>{props.icon}</div>
+      <div className='text-[#2f6f4e] dark:text-[#74a989] [&>svg]:size-5'>
+        {props.icon}
+      </div>
       <h3 className='mt-5 font-semibold'>{props.title}</h3>
       <p className='text-muted-foreground mt-2 text-sm leading-6'>
         {props.text}
