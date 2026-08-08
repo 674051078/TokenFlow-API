@@ -4,7 +4,7 @@
   --nl-ink: #171816;
   --nl-muted: #696b66;
   --nl-line: #d5e3ec;
-  --nl-coral: #d85f3f;
+  --nl-coral: var(--nl-green);
   --nl-blue: #6e92a8;
   --nl-green: #66806a;
   --nl-shadow: rgb(23 24 22 / 7%);
@@ -20,7 +20,7 @@
   --nl-ink: #f2f2ec;
   --nl-muted: #afb1a9;
   --nl-line: #3b3d38;
-  --nl-coral: #ed8164;
+  --nl-coral: var(--nl-green);
   --nl-blue: #8aadc0;
   --nl-green: #8ca68f;
   --nl-shadow: rgb(0 0 0 / 24%);
