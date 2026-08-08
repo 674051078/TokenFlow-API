@@ -288,6 +288,20 @@ export type BillingSettings = {
   MinTopUp: number
   CustomCallbackAddress: string
   PayMethods: string
+  WeChatPayAppID: string
+  WeChatPayMchID: string
+  WeChatPaySerialNumber: string
+  WeChatPayPrivateKey: string
+  WeChatPayAPIV3Key: string
+  WeChatPayPlatformCertificate: string
+  WeChatPayNotifyURL: string
+  WeChatPayMinTopUp: number
+  AlipayAppID: string
+  AlipayPrivateKey: string
+  AlipayPublicKey: string
+  AlipayNotifyURL: string
+  AlipayReturnURL: string
+  AlipayMinTopUp: number
   'payment_setting.amount_options': string
   'payment_setting.amount_discount': string
   'payment_setting.compliance_confirmed': boolean

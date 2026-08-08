@@ -18,6 +18,7 @@ For commercial licensing, please contact support@quantumnous.com
 */
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
 
 import { SectionPageLayout } from '@/components/layout'
 import { useStatus } from '@/hooks/use-status'
@@ -29,10 +30,12 @@ import { BillingHistoryDialog } from './components/dialogs/billing-history-dialo
 import { CreemConfirmDialog } from './components/dialogs/creem-confirm-dialog'
 import { PaymentConfirmDialog } from './components/dialogs/payment-confirm-dialog'
 import { TransferDialog } from './components/dialogs/transfer-dialog'
+import { WeChatNativePaymentDialog } from './components/dialogs/wechat-native-payment-dialog'
 import { RechargeFormCard } from './components/recharge-form-card'
 import { SubscriptionPlansCard } from './components/subscription-plans-card'
 import { WalletStatsCard } from './components/wallet-stats-card'
 import { DEFAULT_DISCOUNT_RATE, PAYMENT_TYPES } from './constants'
+import { getWeChatNativePaymentStatus } from './api'
 import {
   useTopupInfo,
   usePayment,
@@ -96,6 +99,8 @@ export function Wallet(props: WalletProps) {
     processing,
     calculatePaymentAmount,
     processPayment,
+    wechatNativePayment,
+    clearWechatNativePayment,
   } = usePayment()
   const {
     affiliateLink,
@@ -135,6 +140,33 @@ export function Wallet(props: WalletProps) {
       window.history.replaceState({}, '', window.location.pathname)
     }
   }, [props.initialShowHistory])
+
+  useEffect(() => {
+    if (!wechatNativePayment) return
+
+    let cancelled = false
+    const pollPayment = async () => {
+      try {
+        const response = await getWeChatNativePaymentStatus(
+          wechatNativePayment.tradeNo
+        )
+        if (!cancelled && response.data?.paid) {
+          clearWechatNativePayment()
+          toast.success(t('Payment completed'))
+          await fetchUser()
+        }
+      } catch {
+        // The callback remains the source of truth; polling can retry.
+      }
+    }
+
+    void pollPayment()
+    const timer = window.setInterval(() => void pollPayment(), 2000)
+    return () => {
+      cancelled = true
+      window.clearInterval(timer)
+    }
+  }, [clearWechatNativePayment, fetchUser, t, wechatNativePayment])
 
   // Initialize topup amount when topup info is loaded
   const topupAmountInitializedRef = useRef(false)
@@ -363,6 +395,14 @@ export function Wallet(props: WalletProps) {
         processing={processing || waffoProcessing || pancakeProcessing}
         discountRate={getDiscountRate()}
         usdExchangeRate={effectiveUsdExchangeRate}
+      />
+
+      <WeChatNativePaymentDialog
+        open={wechatNativePayment !== null}
+        onOpenChange={(open) => {
+          if (!open) clearWechatNativePayment()
+        }}
+        codeUrl={wechatNativePayment?.codeUrl ?? null}
       />
 
       <TransferDialog

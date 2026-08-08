@@ -75,6 +75,14 @@ export function isStripePayment(paymentType: string): boolean {
   return paymentType === PAYMENT_TYPES.STRIPE
 }
 
+export function isWeChatNativePayment(paymentType: string): boolean {
+  return paymentType === PAYMENT_TYPES.WECHAT_NATIVE
+}
+
+export function isAlipayPagePayment(paymentType: string): boolean {
+  return paymentType === PAYMENT_TYPES.ALIPAY_PAGE
+}
+
 /**
  * Check if payment method is Waffo
  */
@@ -136,6 +144,14 @@ export function getDefaultPaymentType(topupInfo: TopupInfo | null): string {
     return PAYMENT_TYPES.STRIPE
   }
 
+  if (topupInfo.enable_wechat_native_topup) {
+    return PAYMENT_TYPES.WECHAT_NATIVE
+  }
+
+  if (topupInfo.enable_alipay_page_topup) {
+    return PAYMENT_TYPES.ALIPAY_PAGE
+  }
+
   if (topupInfo.enable_waffo_topup) {
     return PAYMENT_TYPES.WAFFO
   }
@@ -161,6 +177,14 @@ export function getMinTopupAmount(topupInfo: TopupInfo | null): number {
 
   if (topupInfo.enable_stripe_topup) {
     return topupInfo.stripe_min_topup
+  }
+
+  if (topupInfo.enable_wechat_native_topup) {
+    return topupInfo.wechat_native_min_topup || DEFAULT_MIN_TOPUP
+  }
+
+  if (topupInfo.enable_alipay_page_topup) {
+    return topupInfo.alipay_page_min_topup || DEFAULT_MIN_TOPUP
   }
 
   if (topupInfo.enable_waffo_topup) {

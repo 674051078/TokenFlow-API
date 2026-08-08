@@ -26,6 +26,8 @@ type TopUp struct {
 
 const (
 	PaymentMethodStripe       = "stripe"
+	PaymentMethodWeChatNative = "wechat_native"
+	PaymentMethodAlipayPage   = "alipay_page"
 	PaymentMethodCreem        = "creem"
 	PaymentMethodWaffo        = "waffo"
 	PaymentMethodWaffoPancake = "waffo_pancake"
@@ -39,6 +41,8 @@ const (
 	PaymentProviderWaffo        = "waffo"
 	PaymentProviderWaffoPancake = "waffo_pancake"
 	PaymentProviderBalance      = "balance"
+	PaymentProviderWeChatNative = "wechat_native"
+	PaymentProviderAlipayPage   = "alipay_page"
 )
 
 var (
@@ -104,6 +108,67 @@ func UpdatePendingTopUpStatus(tradeNo string, expectedPaymentProvider string, ta
 		topUp.Status = targetStatus
 		return tx.Save(topUp).Error
 	})
+}
+
+// CompleteDirectTopUp settles a verified first-party payment callback. The
+// provider and method checks keep a callback for one gateway from completing
+// an order created for another gateway.
+func CompleteDirectTopUp(tradeNo string, expectedPaymentProvider string, expectedPaymentMethod string, callerIP string) error {
+	if tradeNo == "" {
+		return ErrTopUpNotFound
+	}
+
+	refCol := "`trade_no`"
+	if common.UsingMainDatabase(common.DatabaseTypePostgreSQL) {
+		refCol = `"trade_no"`
+	}
+
+	var userID int
+	var quotaToAdd int
+	var payMoney float64
+	var paymentMethod string
+	completed := false
+	err := DB.Transaction(func(tx *gorm.DB) error {
+		topUp := &TopUp{}
+		if err := lockForUpdate(tx).Where(refCol+" = ?", tradeNo).First(topUp).Error; err != nil {
+			return ErrTopUpNotFound
+		}
+		if topUp.PaymentProvider != expectedPaymentProvider || topUp.PaymentMethod != expectedPaymentMethod {
+			return ErrPaymentMethodMismatch
+		}
+		if topUp.Status == common.TopUpStatusSuccess {
+			return nil
+		}
+		if topUp.Status != common.TopUpStatusPending {
+			return ErrTopUpStatusInvalid
+		}
+
+		quotaToAdd = common.QuotaFromDecimal(decimal.NewFromInt(topUp.Amount).Mul(decimal.NewFromFloat(common.QuotaPerUnit)))
+		if quotaToAdd <= 0 {
+			return errors.New("invalid topup quota")
+		}
+		topUp.CompleteTime = common.GetTimestamp()
+		topUp.Status = common.TopUpStatusSuccess
+		if err := tx.Save(topUp).Error; err != nil {
+			return err
+		}
+		if err := tx.Model(&User{}).Where("id = ?", topUp.UserId).Update("quota", gorm.Expr("quota + ?", quotaToAdd)).Error; err != nil {
+			return err
+		}
+
+		userID = topUp.UserId
+		payMoney = topUp.Money
+		paymentMethod = topUp.PaymentMethod
+		completed = true
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	if completed {
+		RecordTopupLog(userID, fmt.Sprintf("direct payment topup succeeded, quota=%s, money=%.2f", logger.FormatQuota(quotaToAdd), payMoney), callerIP, paymentMethod, expectedPaymentProvider)
+	}
+	return nil
 }
 
 func Recharge(referenceId string, customerId string, callerIp string) (err error) {

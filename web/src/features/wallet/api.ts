@@ -28,6 +28,9 @@ import type {
   RedemptionResponse,
   AmountResponse,
   PaymentResponse,
+  WeChatNativePaymentResponse,
+  WeChatNativePaymentStatusResponse,
+  AlipayPagePaymentResponse,
   StripePaymentResponse,
   AffiliateCodeResponse,
   AffiliateTransferResponse,
@@ -119,6 +122,33 @@ export async function requestPayment(
     ...res.data,
     url: res.data.url || (res as unknown as { url?: string }).url,
   }
+}
+
+export async function requestWeChatNativePayment(
+  request: AmountRequest
+): Promise<WeChatNativePaymentResponse> {
+  const res = await api.post('/api/user/wechatpay/pay', request, {
+    skipBusinessError: true,
+  } as Record<string, unknown>)
+  return res.data
+}
+
+export async function getWeChatNativePaymentStatus(
+  tradeNo: string
+): Promise<WeChatNativePaymentStatusResponse> {
+  const res = await api.get(
+    `/api/user/wechatpay/status?trade_no=${encodeURIComponent(tradeNo)}`
+  )
+  return res.data
+}
+
+export async function requestAlipayPagePayment(
+  request: AmountRequest
+): Promise<AlipayPagePaymentResponse> {
+  const res = await api.post('/api/user/alipay/pay', request, {
+    skipBusinessError: true,
+  } as Record<string, unknown>)
+  return res.data
 }
 
 /**

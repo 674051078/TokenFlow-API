@@ -45,6 +45,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 
@@ -119,6 +120,20 @@ const paymentSchema = z.object({
       })
     }
   }),
+  WeChatPayAppID: z.string(),
+  WeChatPayMchID: z.string(),
+  WeChatPaySerialNumber: z.string(),
+  WeChatPayPrivateKey: z.string(),
+  WeChatPayAPIV3Key: z.string(),
+  WeChatPayPlatformCertificate: z.string(),
+  WeChatPayNotifyURL: z.string(),
+  WeChatPayMinTopUp: z.coerce.number().min(1),
+  AlipayAppID: z.string(),
+  AlipayPrivateKey: z.string(),
+  AlipayPublicKey: z.string(),
+  AlipayNotifyURL: z.string(),
+  AlipayReturnURL: z.string(),
+  AlipayMinTopUp: z.coerce.number().min(1),
   AmountOptions: z.string().superRefine((value, ctx) => {
     const error = getJsonError(value, (parsed) => Array.isArray(parsed))
     if (error) {
@@ -427,6 +442,20 @@ export function PaymentSettingsSection({
       PayMethods: values.PayMethods.trim(),
       AmountOptions: values.AmountOptions.trim(),
       AmountDiscount: values.AmountDiscount.trim(),
+      WeChatPayAppID: values.WeChatPayAppID.trim(),
+      WeChatPayMchID: values.WeChatPayMchID.trim(),
+      WeChatPaySerialNumber: values.WeChatPaySerialNumber.trim(),
+      WeChatPayPrivateKey: values.WeChatPayPrivateKey.trim(),
+      WeChatPayAPIV3Key: values.WeChatPayAPIV3Key.trim(),
+      WeChatPayPlatformCertificate: values.WeChatPayPlatformCertificate.trim(),
+      WeChatPayNotifyURL: values.WeChatPayNotifyURL.trim(),
+      WeChatPayMinTopUp: values.WeChatPayMinTopUp,
+      AlipayAppID: values.AlipayAppID.trim(),
+      AlipayPrivateKey: values.AlipayPrivateKey.trim(),
+      AlipayPublicKey: values.AlipayPublicKey.trim(),
+      AlipayNotifyURL: values.AlipayNotifyURL.trim(),
+      AlipayReturnURL: values.AlipayReturnURL.trim(),
+      AlipayMinTopUp: values.AlipayMinTopUp,
       StripeApiSecret: values.StripeApiSecret.trim(),
       StripeWebhookSecret: values.StripeWebhookSecret.trim(),
       StripePriceId: values.StripePriceId.trim(),
@@ -471,6 +500,21 @@ export function PaymentSettingsSection({
       PayMethods: initialRef.current.PayMethods.trim(),
       AmountOptions: initialRef.current.AmountOptions.trim(),
       AmountDiscount: initialRef.current.AmountDiscount.trim(),
+      WeChatPayAppID: initialRef.current.WeChatPayAppID.trim(),
+      WeChatPayMchID: initialRef.current.WeChatPayMchID.trim(),
+      WeChatPaySerialNumber: initialRef.current.WeChatPaySerialNumber.trim(),
+      WeChatPayPrivateKey: initialRef.current.WeChatPayPrivateKey.trim(),
+      WeChatPayAPIV3Key: initialRef.current.WeChatPayAPIV3Key.trim(),
+      WeChatPayPlatformCertificate:
+        initialRef.current.WeChatPayPlatformCertificate.trim(),
+      WeChatPayNotifyURL: initialRef.current.WeChatPayNotifyURL.trim(),
+      WeChatPayMinTopUp: initialRef.current.WeChatPayMinTopUp,
+      AlipayAppID: initialRef.current.AlipayAppID.trim(),
+      AlipayPrivateKey: initialRef.current.AlipayPrivateKey.trim(),
+      AlipayPublicKey: initialRef.current.AlipayPublicKey.trim(),
+      AlipayNotifyURL: initialRef.current.AlipayNotifyURL.trim(),
+      AlipayReturnURL: initialRef.current.AlipayReturnURL.trim(),
+      AlipayMinTopUp: initialRef.current.AlipayMinTopUp,
       StripeApiSecret: initialRef.current.StripeApiSecret.trim(),
       StripeWebhookSecret: initialRef.current.StripeWebhookSecret.trim(),
       StripePriceId: initialRef.current.StripePriceId.trim(),
@@ -526,6 +570,58 @@ export function PaymentSettingsSection({
 
     if (sanitized.MinTopUp !== initial.MinTopUp) {
       updates.push({ key: 'MinTopUp', value: sanitized.MinTopUp })
+    }
+
+    if (sanitized.WeChatPayAppID !== initial.WeChatPayAppID) {
+      updates.push({ key: 'WeChatPayAppID', value: sanitized.WeChatPayAppID })
+    }
+    if (sanitized.WeChatPayMchID !== initial.WeChatPayMchID) {
+      updates.push({ key: 'WeChatPayMchID', value: sanitized.WeChatPayMchID })
+    }
+    if (sanitized.WeChatPaySerialNumber !== initial.WeChatPaySerialNumber) {
+      updates.push({
+        key: 'WeChatPaySerialNumber',
+        value: sanitized.WeChatPaySerialNumber,
+      })
+    }
+    if (sanitized.WeChatPayPrivateKey) {
+      updates.push({
+        key: 'WeChatPayPrivateKey',
+        value: sanitized.WeChatPayPrivateKey,
+      })
+    }
+    if (sanitized.WeChatPayAPIV3Key) {
+      updates.push({ key: 'WeChatPayAPIV3Key', value: sanitized.WeChatPayAPIV3Key })
+    }
+    if (sanitized.WeChatPayPlatformCertificate) {
+      updates.push({
+        key: 'WeChatPayPlatformCertificate',
+        value: sanitized.WeChatPayPlatformCertificate,
+      })
+    }
+    if (sanitized.WeChatPayNotifyURL !== initial.WeChatPayNotifyURL) {
+      updates.push({ key: 'WeChatPayNotifyURL', value: sanitized.WeChatPayNotifyURL })
+    }
+    if (sanitized.WeChatPayMinTopUp !== initial.WeChatPayMinTopUp) {
+      updates.push({ key: 'WeChatPayMinTopUp', value: sanitized.WeChatPayMinTopUp })
+    }
+    if (sanitized.AlipayAppID !== initial.AlipayAppID) {
+      updates.push({ key: 'AlipayAppID', value: sanitized.AlipayAppID })
+    }
+    if (sanitized.AlipayPrivateKey) {
+      updates.push({ key: 'AlipayPrivateKey', value: sanitized.AlipayPrivateKey })
+    }
+    if (sanitized.AlipayPublicKey) {
+      updates.push({ key: 'AlipayPublicKey', value: sanitized.AlipayPublicKey })
+    }
+    if (sanitized.AlipayNotifyURL !== initial.AlipayNotifyURL) {
+      updates.push({ key: 'AlipayNotifyURL', value: sanitized.AlipayNotifyURL })
+    }
+    if (sanitized.AlipayReturnURL !== initial.AlipayReturnURL) {
+      updates.push({ key: 'AlipayReturnURL', value: sanitized.AlipayReturnURL })
+    }
+    if (sanitized.AlipayMinTopUp !== initial.AlipayMinTopUp) {
+      updates.push({ key: 'AlipayMinTopUp', value: sanitized.AlipayMinTopUp })
     }
 
     if (sanitized.CustomCallbackAddress !== initial.CustomCallbackAddress) {
@@ -877,9 +973,10 @@ export function PaymentSettingsSection({
           />
           <Tabs defaultValue='general' className='min-w-0'>
             <div className='overflow-x-auto pb-1'>
-              <TabsList className='grid min-w-[44rem] grid-cols-6'>
+              <TabsList className='grid min-w-[52rem] grid-cols-7'>
                 <TabsTrigger value='general'>{t('General')}</TabsTrigger>
                 <TabsTrigger value='epay'>Epay</TabsTrigger>
+                <TabsTrigger value='direct'>{t('Direct Payments')}</TabsTrigger>
                 <TabsTrigger value='stripe'>{t('Stripe')}</TabsTrigger>
                 <TabsTrigger value='creem'>Creem</TabsTrigger>
                 <TabsTrigger value='waffo-pancake'>Waffo Pancake</TabsTrigger>
@@ -1130,6 +1227,85 @@ export function PaymentSettingsSection({
                       </FormItem>
                     )}
                   />
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value='direct' className={paymentTabContentClassName}>
+              <div className='space-y-6'>
+                <div>
+                  <h3 className='text-lg font-medium'>{t('Direct Payments')}</h3>
+                  <p className='text-muted-foreground text-sm'>
+                    {t(
+                      'Configure official WeChat Native QR payment and Alipay computer website payment. Each gateway is enabled when its required credentials are complete.'
+                    )}
+                  </p>
+                </div>
+
+                <div className='space-y-4 rounded-lg border p-4'>
+                  <div>
+                    <h4 className='font-medium'>{t('WeChat Native Pay')}</h4>
+                    <p className='text-muted-foreground text-sm'>
+                      {t('Users scan a QR code in WeChat to pay.')}
+                    </p>
+                  </div>
+                  <div className='grid gap-6 md:grid-cols-2'>
+                    <FormField control={form.control} name='WeChatPayAppID' render={({ field }) => (
+                      <FormItem><FormLabel>{t('WeChat Pay AppID')}</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                    <FormField control={form.control} name='WeChatPayMchID' render={({ field }) => (
+                      <FormItem><FormLabel>{t('WeChat Pay merchant ID')}</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                    <FormField control={form.control} name='WeChatPaySerialNumber' render={({ field }) => (
+                      <FormItem><FormLabel>{t('WeChat Pay certificate serial number')}</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                    <FormField control={form.control} name='WeChatPayMinTopUp' render={({ field }) => (
+                      <FormItem><FormLabel>{t('WeChat Pay minimum topup')}</FormLabel><FormControl><Input type='number' min={1} {...safeNumberFieldProps(field)} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                  </div>
+                  <FormField control={form.control} name='WeChatPayPrivateKey' render={({ field }) => (
+                    <FormItem><FormLabel>{t('WeChat Pay private key')}</FormLabel><FormControl><Textarea rows={7} placeholder={t('Paste PEM private key')} {...field} /></FormControl><FormDescription>{t('Paste the merchant API certificate private key in PEM format.')}</FormDescription><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name='WeChatPayAPIV3Key' render={({ field }) => (
+                    <FormItem><FormLabel>{t('WeChat Pay API v3 key')}</FormLabel><FormControl><Input type='password' placeholder={t('Enter new key to update')} autoComplete='new-password' {...field} /></FormControl><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name='WeChatPayPlatformCertificate' render={({ field }) => (
+                    <FormItem><FormLabel>{t('WeChat Pay platform certificate')}</FormLabel><FormControl><Textarea rows={7} placeholder={t('Paste PEM platform certificate')} {...field} /></FormControl><FormDescription>{t('Paste the current WeChat Pay platform certificate used to verify callbacks.')}</FormDescription><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name='WeChatPayNotifyURL' render={({ field }) => (
+                    <FormItem><FormLabel>{t('WeChat Pay notify URL')}</FormLabel><FormControl><Input placeholder={t('https://api.example.com/api/wechatpay/notify')} {...field} /></FormControl><FormDescription>{t('Leave blank to use the configured server address plus /api/wechatpay/notify.')}</FormDescription><FormMessage /></FormItem>
+                  )} />
+                </div>
+
+                <div className='space-y-4 rounded-lg border p-4'>
+                  <div>
+                    <h4 className='font-medium'>{t('Alipay PC Pay')}</h4>
+                    <p className='text-muted-foreground text-sm'>
+                      {t('Users are redirected to Alipay computer website payment.')}
+                    </p>
+                  </div>
+                  <div className='grid gap-6 md:grid-cols-2'>
+                    <FormField control={form.control} name='AlipayAppID' render={({ field }) => (
+                      <FormItem><FormLabel>{t('Alipay AppID')}</FormLabel><FormControl><Input {...field} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                    <FormField control={form.control} name='AlipayMinTopUp' render={({ field }) => (
+                      <FormItem><FormLabel>{t('Alipay minimum topup')}</FormLabel><FormControl><Input type='number' min={1} {...safeNumberFieldProps(field)} /></FormControl><FormMessage /></FormItem>
+                    )} />
+                  </div>
+                  <FormField control={form.control} name='AlipayPrivateKey' render={({ field }) => (
+                    <FormItem><FormLabel>{t('Alipay private key')}</FormLabel><FormControl><Textarea rows={7} placeholder={t('Paste PEM private key')} {...field} /></FormControl><FormDescription>{t('Paste the application RSA private key in PEM format.')}</FormDescription><FormMessage /></FormItem>
+                  )} />
+                  <FormField control={form.control} name='AlipayPublicKey' render={({ field }) => (
+                    <FormItem><FormLabel>{t('Alipay public key')}</FormLabel><FormControl><Textarea rows={7} placeholder={t('Paste PEM public key or certificate')} {...field} /></FormControl><FormDescription>{t('Paste the Alipay RSA2 public key or public certificate in PEM format.')}</FormDescription><FormMessage /></FormItem>
+                  )} />
+                  <div className='grid gap-6 md:grid-cols-2'>
+                    <FormField control={form.control} name='AlipayNotifyURL' render={({ field }) => (
+                      <FormItem><FormLabel>{t('Alipay notify URL')}</FormLabel><FormControl><Input placeholder={t('https://api.example.com/api/alipay/notify')} {...field} /></FormControl><FormDescription>{t('Leave blank to use the configured server address plus /api/alipay/notify.')}</FormDescription><FormMessage /></FormItem>
+                    )} />
+                    <FormField control={form.control} name='AlipayReturnURL' render={({ field }) => (
+                      <FormItem><FormLabel>{t('Alipay return URL')}</FormLabel><FormControl><Input placeholder={t('https://api.example.com/wallet')} {...field} /></FormControl><FormDescription>{t('Leave blank to return to the wallet page on the configured server address.')}</FormDescription><FormMessage /></FormItem>
+                    )} />
+                  </div>
                 </div>
               </div>
             </TabsContent>

@@ -38,6 +38,22 @@ export type AmountResponse = ApiResponse<string>
 export type PaymentResponse = ApiResponse<Record<string, unknown>> & {
   url?: string
 }
+export type WeChatNativePaymentResponse = ApiResponse<{
+  trade_no: string
+  code_url: string
+  amount: number
+}>
+export type WeChatNativePaymentStatusResponse = ApiResponse<{
+  trade_no: string
+  status: 'pending' | 'success' | 'failed' | 'expired'
+  paid: boolean
+}>
+export type AlipayPagePaymentResponse = ApiResponse<{
+  trade_no: string
+  url: string
+  data: Record<string, string>
+  amount: number
+}>
 export type StripePaymentResponse = ApiResponse<{ pay_link: string }>
 export type AffiliateCodeResponse = ApiResponse<string>
 export type AffiliateTransferResponse = ApiResponse
@@ -124,6 +140,8 @@ export interface TopupInfo {
   enable_online_topup: boolean
   /** Whether Stripe topup is enabled */
   enable_stripe_topup: boolean
+  enable_wechat_native_topup?: boolean
+  enable_alipay_page_topup?: boolean
   /** Available payment methods */
   pay_methods: PaymentMethod[]
   /** Minimum topup amount for online topup */
@@ -150,6 +168,8 @@ export interface TopupInfo {
   enable_waffo_pancake_topup?: boolean
   /** Minimum topup amount for Waffo Pancake */
   waffo_pancake_min_topup?: number
+  wechat_native_min_topup?: number
+  alipay_page_min_topup?: number
   /** Whether redemption code usage is enabled */
   enable_redemption?: boolean
   /** Whether compliance confirmation has been completed */
@@ -247,7 +267,7 @@ export interface UserWalletData {
 /**
  * Topup record status
  */
-export type TopupStatus = 'success' | 'pending' | 'expired'
+export type TopupStatus = 'success' | 'pending' | 'failed' | 'expired'
 
 /**
  * Topup billing record

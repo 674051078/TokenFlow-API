@@ -27,10 +27,14 @@ import {
   calculateWaffoPancakeAmount,
   requestPayment,
   requestStripePayment,
+  requestWeChatNativePayment,
+  requestAlipayPagePayment,
   isApiSuccess,
 } from '../api'
 import {
   isStripePayment,
+  isWeChatNativePayment,
+  isAlipayPagePayment,
   isWaffoPayment,
   isWaffoPancakePayment,
   submitPaymentForm,
@@ -83,6 +87,14 @@ export function usePayment() {
   const [amount, setAmount] = useState<number>(0)
   const [calculating, setCalculating] = useState(false)
   const [processing, setProcessing] = useState(false)
+  const [wechatNativePayment, setWechatNativePayment] = useState<{
+    tradeNo: string
+    codeUrl: string
+  } | null>(null)
+  const clearWechatNativePayment = useCallback(
+    () => setWechatNativePayment(null),
+    []
+  )
 
   // Calculate payment amount
   const calculatePaymentAmount = useCallback(
@@ -111,8 +123,33 @@ export function usePayment() {
       try {
         setProcessing(true)
 
-        const isStripe = isStripePayment(paymentType)
         const amount = Math.floor(topupAmount)
+
+        if (isWeChatNativePayment(paymentType)) {
+          const response = await requestWeChatNativePayment({ amount })
+          if (!isApiSuccess(response) || !response.data?.code_url) {
+            toast.error(response.message || i18next.t('Payment request failed'))
+            return false
+          }
+          setWechatNativePayment({
+            tradeNo: response.data.trade_no,
+            codeUrl: response.data.code_url,
+          })
+          return true
+        }
+
+        if (isAlipayPagePayment(paymentType)) {
+          const response = await requestAlipayPagePayment({ amount })
+          if (!isApiSuccess(response) || !response.data?.url) {
+            toast.error(response.message || i18next.t('Payment request failed'))
+            return false
+          }
+          submitPaymentForm(response.data.url, response.data.data)
+          toast.success(i18next.t('Redirecting to payment page...'))
+          return true
+        }
+
+        const isStripe = isStripePayment(paymentType)
 
         const response = isStripe
           ? await requestStripePayment({
@@ -163,6 +200,8 @@ export function usePayment() {
     processing,
     calculatePaymentAmount,
     processPayment,
+    wechatNativePayment,
+    clearWechatNativePayment,
     setAmount,
   }
 }

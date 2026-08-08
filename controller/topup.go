@@ -25,9 +25,28 @@ func GetTopUpInfo(c *gin.Context) {
 	complianceConfirmed := operation_setting.IsPaymentComplianceConfirmed()
 
 	// 获取支付方式
-	payMethods := operation_setting.PayMethods
+	payMethods := []map[string]string{}
+	if isEpayTopUpEnabled() {
+		payMethods = append(payMethods, operation_setting.PayMethods...)
+	}
 	if !complianceConfirmed {
 		payMethods = []map[string]string{}
+	}
+	if isWeChatNativeTopUpEnabled() {
+		payMethods = append(payMethods, map[string]string{
+			"name":      "WeChat Native",
+			"type":      model.PaymentMethodWeChatNative,
+			"color":     "#07C160",
+			"min_topup": strconv.Itoa(setting.WeChatPayMinTopUp),
+		})
+	}
+	if isAlipayPageTopUpEnabled() {
+		payMethods = append(payMethods, map[string]string{
+			"name":      "Alipay PC",
+			"type":      model.PaymentMethodAlipayPage,
+			"color":     "#1677FF",
+			"min_topup": strconv.Itoa(setting.AlipayMinTopUp),
+		})
 	}
 
 	// 如果启用了 Stripe 支付，添加到支付方法列表
@@ -101,6 +120,8 @@ func GetTopUpInfo(c *gin.Context) {
 		"enable_creem_topup":               isCreemTopUpEnabled(),
 		"enable_waffo_topup":               enableWaffo,
 		"enable_waffo_pancake_topup":       enableWaffoPancake,
+		"enable_wechat_native_topup":       isWeChatNativeTopUpEnabled(),
+		"enable_alipay_page_topup":         isAlipayPageTopUpEnabled(),
 		"enable_redemption":                complianceConfirmed,
 		"payment_compliance_confirmed":     complianceConfirmed,
 		"payment_compliance_terms_version": operation_setting.CurrentComplianceTermsVersion,
@@ -116,6 +137,8 @@ func GetTopUpInfo(c *gin.Context) {
 		"stripe_min_topup":        setting.StripeMinTopUp,
 		"waffo_min_topup":         setting.WaffoMinTopUp,
 		"waffo_pancake_min_topup": setting.WaffoPancakeMinTopUp,
+		"wechat_native_min_topup": setting.WeChatPayMinTopUp,
+		"alipay_page_min_topup":   setting.AlipayMinTopUp,
 		"amount_options":          operation_setting.GetPaymentSetting().AmountOptions,
 		"discount":                operation_setting.GetPaymentSetting().AmountDiscount,
 		"topup_link":              common.TopUpLink,
