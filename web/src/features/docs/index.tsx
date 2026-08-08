@@ -803,40 +803,37 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                   'These are official provider documents for API keys, model capabilities, request fields, regional endpoints, and pricing. TokenFlow remains the stable gateway your applications call.'
                 )}
               </p>
-              <nav
-                className='border-border mb-8 flex gap-2 overflow-x-auto border-b pb-3'
-                aria-label={t('Provider directory')}
-                role='tablist'
-              >
-                {OFFICIAL_DOC_GROUPS.map((group) => (
-                  <button
-                    key={group.id}
-                    type='button'
-                    role='tab'
-                    aria-selected={selectedProvider === group.id}
-                    aria-controls={`provider-${group.id}`}
-                    onClick={() => selectProvider(group.id)}
-                    className={cn(
-                      'border-border shrink-0 rounded-md border px-3 py-2 text-sm whitespace-nowrap transition-colors',
-                      selectedProvider === group.id
-                        ? 'bg-foreground text-background border-foreground'
-                        : 'hover:bg-muted'
-                    )}
-                  >
-                    {group.provider}
-                  </button>
-                ))}
-              </nav>
               <div
                 id={`provider-${selectedProviderGroup.id}`}
                 className='scroll-mt-24'
                 role='tabpanel'
                 aria-label={selectedProviderGroup.provider}
               >
-                <div className='mb-4 flex flex-wrap items-baseline justify-between gap-2'>
-                  <h3 className='text-lg font-semibold'>
-                    {selectedProviderGroup.provider}
-                  </h3>
+                <div className='mb-4 flex items-center gap-3'>
+                  <nav
+                    className='flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1'
+                    aria-label={t('Provider directory')}
+                    role='tablist'
+                  >
+                    {OFFICIAL_DOC_GROUPS.map((group) => (
+                      <button
+                        key={group.id}
+                        type='button'
+                        role='tab'
+                        aria-selected={selectedProvider === group.id}
+                        aria-controls={`provider-${group.id}`}
+                        onClick={() => selectProvider(group.id)}
+                        className={cn(
+                          'border-border shrink-0 rounded-md border px-3 py-2 text-sm whitespace-nowrap transition-colors',
+                          selectedProvider === group.id
+                            ? 'bg-foreground text-background border-foreground'
+                            : 'hover:bg-muted'
+                        )}
+                      >
+                        {group.provider}
+                      </button>
+                    ))}
+                  </nav>
                   <span className='text-muted-foreground text-xs'>
                     {t('Select an official API reference')}
                   </span>
