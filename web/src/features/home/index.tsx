@@ -26,7 +26,10 @@ import { isLikelyHtml } from '@/lib/content-format'
 import { useAuthStore } from '@/stores/auth-store'
 
 import { DomesticLanding } from './components/domestic-landing'
+import { TokenFlowMark } from './components/token-flow-mark'
 import { useHomePageContent } from './hooks'
+
+const TOKEN_FLOW_BRAND = 'Token Flow'
 
 export function Home() {
   const { i18n, t } = useTranslation()
@@ -36,6 +39,7 @@ export function Home() {
   const isAuthenticated = !!auth.user
   const { content, isLoaded, isUrl } = useHomePageContent()
   const docsUrl = 'https://docs.newapi.pro'
+  const brandLogo = <TokenFlowMark />
 
   const syncIframePreferences = useCallback(() => {
     try {
@@ -60,7 +64,11 @@ export function Home() {
 
   if (!isLoaded) {
     return (
-      <PublicLayout showMainContainer={false}>
+      <PublicLayout
+        logo={brandLogo}
+        showMainContainer={false}
+        siteName={TOKEN_FLOW_BRAND}
+      >
         <main className='flex min-h-screen items-center justify-center'>
           <div className='text-muted-foreground'>{t('Loading...')}</div>
         </main>
@@ -71,7 +79,11 @@ export function Home() {
   if (content) {
     if (isUrl) {
       return (
-        <PublicLayout showMainContainer={false}>
+        <PublicLayout
+          logo={brandLogo}
+          showMainContainer={false}
+          siteName={TOKEN_FLOW_BRAND}
+        >
           {/*
             allow-top-navigation-by-user-activation: the custom home page URL is
             admin-configured (trusted); this lets its target="_top" nav/menu links
@@ -96,7 +108,11 @@ export function Home() {
 
     if (contentIsHtml) {
       return (
-        <PublicLayout showMainContainer={false}>
+        <PublicLayout
+          logo={brandLogo}
+          showMainContainer={false}
+          siteName={TOKEN_FLOW_BRAND}
+        >
           <RichContent
             mode='html'
             htmlVariant='isolated'
@@ -108,7 +124,7 @@ export function Home() {
     }
 
     return (
-      <PublicLayout>
+      <PublicLayout logo={brandLogo} siteName={TOKEN_FLOW_BRAND}>
         <div className='mx-auto max-w-6xl px-4 py-8'>
           <RichContent
             mode='markdown'
@@ -123,6 +139,8 @@ export function Home() {
   return (
     <PublicLayout
       showMainContainer={false}
+      logo={brandLogo}
+      siteName={TOKEN_FLOW_BRAND}
       navLinks={[
         { title: '首页', href: '/' },
         { title: '模型与价格', href: '/pricing' },
@@ -131,7 +149,11 @@ export function Home() {
       ]}
       headerProps={{ className: 'public-header--editorial' }}
     >
-      <DomesticLanding docsUrl={docsUrl} isAuthenticated={isAuthenticated} />
+      <DomesticLanding
+        brandName={TOKEN_FLOW_BRAND}
+        docsUrl={docsUrl}
+        isAuthenticated={isAuthenticated}
+      />
     </PublicLayout>
   )
 }

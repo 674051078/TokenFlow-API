@@ -35,11 +35,12 @@ import {
 } from 'lucide-react'
 
 import { Footer } from '@/components/layout/components/footer'
-import { useSystemConfig } from '@/hooks/use-system-config'
 
 import './domestic-landing.css'
+import { TokenFlowMark } from './token-flow-mark'
 
 interface DomesticLandingProps {
+  brandName: string
   docsUrl: string
   isAuthenticated?: boolean
 }
@@ -108,8 +109,6 @@ const REQUEST_LOGS = [
 ] as const
 
 export function DomesticLanding(props: DomesticLandingProps) {
-  const { systemName } = useSystemConfig()
-  const displayName = systemName || 'New API'
   const docsExternal = props.docsUrl.startsWith('http')
 
   return (
@@ -119,7 +118,7 @@ export function DomesticLanding(props: DomesticLandingProps) {
           <div className='nl-hero-copy'>
             <div className='nl-eyebrow'>
               <span className='nl-live-dot' />
-              {displayName} · DOMESTIC MODEL GATEWAY
+              {props.brandName} · DOMESTIC MODEL GATEWAY
             </div>
 
             <h1 id='landing-title'>
@@ -173,7 +172,7 @@ export function DomesticLanding(props: DomesticLandingProps) {
             </div>
           </div>
 
-          <GatewayRouteBoard displayName={displayName} />
+          <GatewayRouteBoard displayName={props.brandName} />
         </div>
         <div className='nl-hero-index' aria-hidden='true'>
           <span>REQUEST</span>
@@ -243,7 +242,7 @@ export function DomesticLanding(props: DomesticLandingProps) {
                 />
                 <TraceStep
                   icon={<Route />}
-                  label={displayName}
+                  label={props.brandName}
                   detail='policy matched'
                 />
                 <TraceStep
@@ -273,9 +272,7 @@ export function DomesticLanding(props: DomesticLandingProps) {
               <span className='nl-kicker'>国内模型矩阵</span>
               <h2 id='models-title'>把模型选择变成清晰、可控的路由</h2>
             </div>
-            <p>
-              当前页面仅展示国内模型能力。按任务类型选择上游，统一管理模型别名、分组、倍率和故障切换。
-            </p>
+            <p>按任务类型选择上游，统一管理模型别名、分组、倍率和故障切换。</p>
           </div>
 
           <div className='nl-model-rail'>
@@ -333,11 +330,14 @@ export function DomesticLanding(props: DomesticLandingProps) {
             </div>
           </div>
 
-          <div className='nl-console' aria-label='New API 控制台能力示意'>
+          <div
+            className='nl-console'
+            aria-label={`${props.brandName} 控制台能力示意`}
+          >
             <div className='nl-console-head'>
               <div>
                 <Layers3 aria-hidden />
-                <strong>{displayName} Console</strong>
+                <strong>{props.brandName} Console</strong>
               </div>
               <span>
                 <i /> routes healthy
@@ -468,7 +468,11 @@ export function DomesticLanding(props: DomesticLandingProps) {
         </div>
       </section>
 
-      <Footer className='nl-footer' />
+      <Footer
+        brandMark={<TokenFlowMark />}
+        className='nl-footer'
+        name={props.brandName}
+      />
     </div>
   )
 }
