@@ -1090,7 +1090,7 @@
 .nl-governance-row strong svg {
   width: 16px;
   height: 16px;
-  color: #ed8164;
+  color: var(--nl-green);
 }
 
 .nl-governance-actions {
@@ -1116,7 +1116,7 @@
 }
 
 .nl-governance .nl-inline-link:hover {
-  color: #ed8164;
+  color: var(--nl-green);
 }
 
 .nl-final-cta {
