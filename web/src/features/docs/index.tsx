@@ -107,49 +107,150 @@ const API_SURFACE = [
   ],
 ] as const
 
-const OFFICIAL_DOCS = [
-  [
-    'Qwen',
-    'Qwen API quick start',
-    'Create a Qwen API key, choose a region, and make the first OpenAI-compatible request.',
-    'https://help.aliyun.com/zh/model-studio/first-api-call-to-qwen',
-  ],
-  [
-    'Qwen',
-    'Qwen text generation reference',
-    'Review chat, Responses, and native DashScope interfaces before mapping a model into TokenFlow.',
-    'https://help.aliyun.com/zh/model-studio/qwen-api-reference/',
-  ],
-  [
-    'Qwen',
-    'Qwen text-to-image reference',
-    'Check prompt, size, reference image, asynchronous task, and result fields for image generation.',
-    'https://help.aliyun.com/zh/model-studio/text-to-image-api-reference',
-  ],
-  [
-    'Qwen',
-    'Qwen text-to-video reference',
-    'Check regional endpoints, async task creation, polling, duration, resolution, and prompt fields.',
-    'https://help.aliyun.com/zh/model-studio/text-to-video-api-reference',
-  ],
-  [
-    'DeepSeek',
-    'DeepSeek first API call',
-    'Use the official OpenAI-compatible endpoint to verify an API key and a text generation request.',
-    'https://api-docs.deepseek.com/zh-cn/guides/reasoning_model',
-  ],
-  [
-    'DeepSeek',
-    'DeepSeek chat completion reference',
-    'Review streaming, reasoning, tool calls, response format, and model-specific request fields.',
-    'https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/',
-  ],
-  [
-    'DeepSeek',
-    'DeepSeek JSON output guide',
-    'Use structured JSON responses for extraction, workflow automation, and downstream business systems.',
-    'https://api-docs.deepseek.com/zh-cn/guides/json_mode/',
-  ],
+const OFFICIAL_DOC_GROUPS = [
+  {
+    id: 'qwen',
+    provider: 'Qwen',
+    docs: [
+      [
+        'Qwen API quick start',
+        'Create a Qwen API key, choose a region, and make the first OpenAI-compatible request.',
+        'https://help.aliyun.com/zh/model-studio/first-api-call-to-qwen',
+      ],
+      [
+        'Qwen text generation reference',
+        'Review chat, Responses, and native DashScope interfaces before mapping a model into TokenFlow.',
+        'https://help.aliyun.com/zh/model-studio/qwen-api-reference/',
+      ],
+      [
+        'Qwen text-to-image reference',
+        'Check prompt, size, reference image, asynchronous task, and result fields for image generation.',
+        'https://help.aliyun.com/zh/model-studio/text-to-image-api-reference',
+      ],
+      [
+        'Qwen text-to-video reference',
+        'Check regional endpoints, async task creation, polling, duration, resolution, and prompt fields.',
+        'https://help.aliyun.com/zh/model-studio/text-to-video-api-reference',
+      ],
+    ],
+  },
+  {
+    id: 'deepseek',
+    provider: 'DeepSeek',
+    docs: [
+      [
+        'DeepSeek first API call',
+        'Use the official OpenAI-compatible endpoint to verify an API key and a text generation request.',
+        'https://api-docs.deepseek.com/zh-cn/guides/reasoning_model',
+      ],
+      [
+        'DeepSeek chat completion reference',
+        'Review streaming, reasoning, tool calls, response format, and model-specific request fields.',
+        'https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/',
+      ],
+      [
+        'DeepSeek JSON output guide',
+        'Use structured JSON responses for extraction, workflow automation, and downstream business systems.',
+        'https://api-docs.deepseek.com/zh-cn/guides/json_mode/',
+      ],
+    ],
+  },
+  {
+    id: 'doubao',
+    provider: 'Doubao / Volcengine Ark',
+    docs: [
+      [
+        'Doubao and Ark documentation center',
+        'Find model services, authentication, endpoint configuration, and enterprise deployment guidance.',
+        'https://www.volcengine.com/docs?lang=zh',
+      ],
+      [
+        'Ark model inference API',
+        'Review chat, Responses, image, video, and embedding capabilities available through Ark.',
+        'https://www.volcengine.com/docs/82379/66619f8df281250274ef4f88?lang=zh',
+      ],
+    ],
+  },
+  {
+    id: 'kimi',
+    provider: 'Kimi / Moonshot AI',
+    docs: [
+      [
+        'Kimi API concepts',
+        'Understand Kimi models, API keys, context windows, and the OpenAI-compatible integration model.',
+        'https://platform.kimi.com/docs/introduction',
+      ],
+      [
+        'Kimi API overview',
+        'Use the official endpoint and SDK examples when configuring a Kimi channel in TokenFlow.',
+        'https://platform.kimi.com/docs/api/overview',
+      ],
+    ],
+  },
+  {
+    id: 'glm',
+    provider: 'GLM / Zhipu AI',
+    docs: [
+      [
+        'GLM HTTP API quick start',
+        'Create credentials and send an HTTP request to the official GLM model service.',
+        'https://docs.bigmodel.cn/cn/guide/develop/http/introduction',
+      ],
+    ],
+  },
+  {
+    id: 'qianfan',
+    provider: 'Baidu Qianfan',
+    docs: [
+      [
+        'Qianfan documentation center',
+        'Browse enterprise model, Agent, multimodal, pricing, and authentication documentation.',
+        'https://cloud.baidu.com/doc/qianfan/index.html',
+      ],
+      [
+        'Qianfan text generation API',
+        'Review the OpenAI-compatible chat endpoint, API key permissions, model field, and messages format.',
+        'https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb',
+      ],
+      [
+        'Qianfan multimodal inference API',
+        'Check text, image, video, image editing, and embedding capabilities exposed by the V2 API.',
+        'https://cloud.baidu.com/doc/qianfan/s/qmh4sv5vi',
+      ],
+    ],
+  },
+  {
+    id: 'minimax',
+    provider: 'MiniMax',
+    docs: [
+      [
+        'MiniMax API overview',
+        'Review text, speech, image, video, music, and file APIs in the official platform index.',
+        'https://platform.minimaxi.com/docs/api-reference/api-overview',
+      ],
+      [
+        'MiniMax API key and access FAQ',
+        'Find official instructions for creating API keys, quotas, and account-level access.',
+        'https://platform.minimaxi.com/docs/faq/about-apis',
+      ],
+    ],
+  },
+  {
+    id: 'hunyuan',
+    provider: 'Tencent Hunyuan',
+    docs: [
+      [
+        'Hunyuan image generation API',
+        'Review Tencent Cloud authentication, image generation tasks, parameters, and result polling.',
+        'https://cloud.tencent.cn/document/api/1668/88077',
+      ],
+      [
+        'Hunyuan video generation task API',
+        'Review text-to-video and image-to-video task creation, status queries, and API Explorer usage.',
+        'https://cloud.tencent.com/document/product/1616/126160',
+      ],
+    ],
+  },
 ] as const
 
 const MODEL_USE_CASES = [
@@ -161,12 +262,93 @@ const MODEL_USE_CASES = [
   ['glm-4.5', 'GLM', 'Conversation and agent tasks'],
 ] as const
 
-const ERROR_CODES = [
-  ['400', 'Invalid request parameters'],
-  ['401', 'API key is missing or invalid'],
-  ['402', 'Insufficient quota'],
-  ['429', 'Rate limit exceeded'],
-  ['500', 'Upstream service is temporarily unavailable'],
+const DOC_NAV_ITEMS = [
+  ['#overview', 'Overview'],
+  ['#scenarios', 'Enterprise scenarios'],
+  ['#quick-start', 'Quick start'],
+  ['#authentication', 'Authentication'],
+  ['#api-surface', 'API surface'],
+  ['#generation', 'Generation workflows'],
+  ['#models', 'Domestic model guide'],
+  ['#references', 'Official upstream references'],
+  ['#governance', 'Enterprise governance'],
+  ['#errors', 'Error handling'],
+] as const
+
+const ERROR_GUIDES = [
+  [
+    '400',
+    'Invalid request parameters',
+    'Check JSON syntax, required fields, model alias, content type, and media parameter ranges.',
+  ],
+  [
+    '401',
+    'API key is missing or invalid',
+    'Confirm the Authorization header, key status, expiration, group access, and whether the key belongs to this TokenFlow instance.',
+  ],
+  [
+    '402',
+    'Insufficient quota',
+    'Check the user balance, group quota, model price, and whether a media task was pre-charged before retrying.',
+  ],
+  [
+    '404',
+    'Model or endpoint not found',
+    'Confirm the endpoint path and verify that the requested model alias is enabled in the selected group.',
+  ],
+  [
+    '408',
+    'Request timed out',
+    'For media tasks, keep polling the task endpoint; for synchronous requests, retry with a bounded backoff and inspect the request ID.',
+  ],
+  [
+    '413',
+    'Request body is too large',
+    'Reduce image size, prompt length, attachments, or conversation history, then retry with only the required fields.',
+  ],
+  [
+    '429',
+    'Rate limit exceeded',
+    'Slow down retries, respect the returned retry hint, and ask an administrator to review RPM, TPM, or channel limits.',
+  ],
+  [
+    '500',
+    'Gateway internal error',
+    'Use the request ID to inspect server logs and confirm that the configured channel and database are healthy.',
+  ],
+  [
+    '502',
+    'Upstream request failed',
+    'Check the upstream response, provider endpoint, model permissions, and channel key before changing the client request.',
+  ],
+  [
+    '503',
+    'Upstream service is temporarily unavailable',
+    'Check channel health and fallback routing, then retry after a short backoff or switch to an enabled model alias.',
+  ],
+] as const
+
+const TASK_STATUS_GUIDE = [
+  [
+    'queued',
+    'Queued',
+    'The task has been accepted. Poll the task endpoint after a short delay.',
+  ],
+  [
+    'processing',
+    'Processing',
+    'The upstream model is generating. Do not create duplicate tasks unless the request has expired.',
+  ],
+  [
+    'succeeded',
+    'Succeeded',
+    'Read the result URL or output object, then download the asset from the returned endpoint.',
+  ],
+  [
+    'failed',
+    'Failed',
+    'Keep the task ID and request ID, read the error detail, and fix the model or input before retrying.',
+  ],
 ] as const
 
 export function DeveloperDocs() {
@@ -230,35 +412,29 @@ console.log(await response.json())`,
       siteName={TOKEN_FLOW_BRAND}
     >
       <main className='bg-background min-h-svh pt-24'>
-        <div className='mx-auto grid w-full max-w-7xl gap-12 px-6 pb-20 lg:grid-cols-[210px_minmax(0,1fr)] lg:px-8'>
-          <aside className='hidden lg:block'>
+        <div className='mx-auto grid w-full max-w-7xl gap-8 px-4 pb-20 sm:grid-cols-[160px_minmax(0,1fr)] sm:px-6 lg:grid-cols-[210px_minmax(0,1fr)] lg:gap-12 lg:px-8'>
+          <aside className='hidden sm:block'>
             <nav className='sticky top-24 space-y-1 text-sm'>
               <p className='text-muted-foreground mb-3 px-3 text-xs font-semibold uppercase'>
                 {t('Developer docs')}
               </p>
-              <DocNavLink href='#overview' label={t('Overview')} />
-              <DocNavLink href='#scenarios' label={t('Enterprise scenarios')} />
-              <DocNavLink href='#quick-start' label={t('Quick start')} />
-              <DocNavLink href='#authentication' label={t('Authentication')} />
-              <DocNavLink href='#api-surface' label={t('API surface')} />
-              <DocNavLink
-                href='#generation'
-                label={t('Generation workflows')}
-              />
-              <DocNavLink href='#models' label={t('Domestic model guide')} />
-              <DocNavLink
-                href='#references'
-                label={t('Official upstream references')}
-              />
-              <DocNavLink
-                href='#governance'
-                label={t('Enterprise governance')}
-              />
-              <DocNavLink href='#errors' label={t('Error handling')} />
+              {DOC_NAV_ITEMS.map(([href, label]) => (
+                <DocNavLink key={href} href={href} label={t(label)} />
+              ))}
             </nav>
           </aside>
 
           <article className='min-w-0'>
+            <div className='border-border mb-8 rounded-md border p-3 sm:hidden'>
+              <p className='text-muted-foreground mb-2 px-2 text-xs font-semibold uppercase'>
+                {t('On this page')}
+              </p>
+              <nav className='grid grid-cols-2 gap-1 text-sm'>
+                {DOC_NAV_ITEMS.map(([href, label]) => (
+                  <DocNavLink key={href} href={href} label={t(label)} />
+                ))}
+              </nav>
+            </div>
             <header
               id='overview'
               className='border-border scroll-mt-24 border-b pb-12'
@@ -583,24 +759,64 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                   'These are official provider documents for API keys, model capabilities, request fields, regional endpoints, and pricing. TokenFlow remains the stable gateway your applications call.'
                 )}
               </p>
-              <div className='border-border grid gap-px overflow-hidden rounded-md border sm:grid-cols-2'>
-                {OFFICIAL_DOCS.map(([provider, title, description, href]) => (
-                  <a
-                    key={href}
-                    href={href}
-                    target='_blank'
-                    rel='noreferrer'
-                    className='bg-background hover:bg-muted/40 group p-5 transition-colors'
+              <div className='border-border mb-8 rounded-md border p-4'>
+                <p className='font-semibold'>{t('Provider directory')}</p>
+                <p className='text-muted-foreground mt-1 text-sm leading-6'>
+                  {t(
+                    'Choose a domestic provider first, then jump to its official API, image, video, or enterprise integration tutorials.'
+                  )}
+                </p>
+                <nav className='mt-4 flex flex-wrap gap-2'>
+                  {OFFICIAL_DOC_GROUPS.map((group) => (
+                    <a
+                      key={group.id}
+                      href={`#provider-${group.id}`}
+                      className='border-border hover:bg-muted rounded-md border px-3 py-2 text-sm transition-colors'
+                    >
+                      {group.provider}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+              <div className='space-y-10'>
+                {OFFICIAL_DOC_GROUPS.map((group) => (
+                  <div
+                    key={group.id}
+                    id={`provider-${group.id}`}
+                    className='scroll-mt-24'
                   >
-                    <div className='text-muted-foreground flex items-center justify-between font-mono text-xs uppercase'>
-                      <span>{provider}</span>
-                      <ExternalLink className='size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
+                    <div className='mb-4 flex flex-wrap items-baseline justify-between gap-2'>
+                      <h3 className='text-lg font-semibold'>
+                        {group.provider}
+                      </h3>
+                      <a
+                        href='#references'
+                        className='text-muted-foreground hover:text-foreground text-xs transition-colors'
+                      >
+                        {t('Back to provider directory')}
+                      </a>
                     </div>
-                    <h3 className='mt-8 font-semibold'>{t(title)}</h3>
-                    <p className='text-muted-foreground mt-2 text-sm leading-6'>
-                      {t(description)}
-                    </p>
-                  </a>
+                    <div className='border-border grid gap-px overflow-hidden rounded-md border sm:grid-cols-2'>
+                      {group.docs.map(([title, description, href]) => (
+                        <a
+                          key={href}
+                          href={href}
+                          target='_blank'
+                          rel='noreferrer'
+                          className='bg-background hover:bg-muted/40 group p-5 transition-colors'
+                        >
+                          <div className='text-muted-foreground flex items-center justify-between font-mono text-xs uppercase'>
+                            <span>{group.provider}</span>
+                            <ExternalLink className='size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
+                          </div>
+                          <h4 className='mt-8 font-semibold'>{t(title)}</h4>
+                          <p className='text-muted-foreground mt-2 text-sm leading-6'>
+                            {t(description)}
+                          </p>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
             </DocSection>
@@ -643,16 +859,45 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
             </DocSection>
 
             <DocSection id='errors' eyebrow='09' title={t('Error handling')}>
+              <p className='text-muted-foreground mb-6 max-w-3xl text-sm leading-7'>
+                {t(
+                  'TokenFlow keeps the response shape predictable so your application can handle validation, authentication, quota, rate-limit, gateway, and upstream failures with one error path.'
+                )}
+              </p>
               <div className='border-border overflow-hidden rounded-md border'>
-                {ERROR_CODES.map(([code, description]) => (
+                <div className='bg-muted/30 text-muted-foreground grid gap-2 border-b px-4 py-3 text-xs font-semibold uppercase md:grid-cols-[70px_190px_1fr]'>
+                  <span>{t('Code')}</span>
+                  <span>{t('Meaning')}</span>
+                  <span>{t('What to check')}</span>
+                </div>
+                {ERROR_GUIDES.map(([code, meaning, guidance]) => (
                   <div
                     key={code}
-                    className='border-border grid grid-cols-[70px_1fr] gap-4 border-b px-4 py-4 text-sm last:border-b-0'
+                    className='border-border grid gap-2 border-b px-4 py-4 text-sm last:border-b-0 md:grid-cols-[70px_190px_1fr]'
                   >
                     <code className='font-mono font-semibold'>{code}</code>
-                    <span className='text-muted-foreground'>
-                      {t(description)}
-                    </span>
+                    <strong>{t(meaning)}</strong>
+                    <span className='text-muted-foreground'>{t(guidance)}</span>
+                  </div>
+                ))}
+              </div>
+              <div className='border-border mt-8 overflow-hidden rounded-md border'>
+                <div className='bg-muted/30 border-border border-b px-4 py-3'>
+                  <strong>{t('Asynchronous task statuses')}</strong>
+                  <p className='text-muted-foreground mt-1 text-xs'>
+                    {t(
+                      'Image and video requests may return a task ID first. Poll the task endpoint and handle these normalized statuses.'
+                    )}
+                  </p>
+                </div>
+                {TASK_STATUS_GUIDE.map(([status, meaning, guidance]) => (
+                  <div
+                    key={status}
+                    className='border-border grid gap-2 border-b px-4 py-3 text-sm last:border-b-0 md:grid-cols-[110px_150px_1fr]'
+                  >
+                    <code className='font-mono text-xs'>{status}</code>
+                    <strong>{t(meaning)}</strong>
+                    <span className='text-muted-foreground'>{t(guidance)}</span>
                   </div>
                 ))}
               </div>
@@ -660,10 +905,20 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                 <strong>{t('Troubleshooting order')}</strong>
                 <p className='text-muted-foreground mt-1'>
                   {t(
-                    'Check the request ID, API key status, remaining quota, model access, and upstream channel status in that order.'
+                    'Check the request ID, API key status, remaining quota, model access, request parameters, and upstream channel status in that order.'
                   )}
                 </p>
               </div>
+              <pre className='mt-6 overflow-x-auto rounded-md bg-[#171816] p-5 font-mono text-xs leading-6 text-[#f2f2ec]'>
+                <code>{`{
+  "error": {
+    "message": "具体错误信息",
+    "type": "invalid_request_error",
+    "code": "invalid_model",
+    "request_id": "request_..."
+  }
+}`}</code>
+              </pre>
             </DocSection>
           </article>
         </div>
