@@ -24,13 +24,16 @@ import {
   CheckCircle2,
   Clapperboard,
   Copy,
+  ExternalLink,
   FileText,
+  Image,
   KeyRound,
   Route,
   ShieldCheck,
   SlidersHorizontal,
   TerminalSquare,
   Users,
+  Video,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -104,6 +107,51 @@ const API_SURFACE = [
   ],
 ] as const
 
+const OFFICIAL_DOCS = [
+  [
+    'Qwen',
+    'Qwen API quick start',
+    'Create a Qwen API key, choose a region, and make the first OpenAI-compatible request.',
+    'https://help.aliyun.com/zh/model-studio/first-api-call-to-qwen',
+  ],
+  [
+    'Qwen',
+    'Qwen text generation reference',
+    'Review chat, Responses, and native DashScope interfaces before mapping a model into TokenFlow.',
+    'https://help.aliyun.com/zh/model-studio/qwen-api-reference/',
+  ],
+  [
+    'Qwen',
+    'Qwen text-to-image reference',
+    'Check prompt, size, reference image, asynchronous task, and result fields for image generation.',
+    'https://help.aliyun.com/zh/model-studio/text-to-image-api-reference',
+  ],
+  [
+    'Qwen',
+    'Qwen text-to-video reference',
+    'Check regional endpoints, async task creation, polling, duration, resolution, and prompt fields.',
+    'https://help.aliyun.com/zh/model-studio/text-to-video-api-reference',
+  ],
+  [
+    'DeepSeek',
+    'DeepSeek first API call',
+    'Use the official OpenAI-compatible endpoint to verify an API key and a text generation request.',
+    'https://api-docs.deepseek.com/zh-cn/guides/reasoning_model',
+  ],
+  [
+    'DeepSeek',
+    'DeepSeek chat completion reference',
+    'Review streaming, reasoning, tool calls, response format, and model-specific request fields.',
+    'https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/',
+  ],
+  [
+    'DeepSeek',
+    'DeepSeek JSON output guide',
+    'Use structured JSON responses for extraction, workflow automation, and downstream business systems.',
+    'https://api-docs.deepseek.com/zh-cn/guides/json_mode/',
+  ],
+] as const
+
 const MODEL_USE_CASES = [
   ['deepseek-chat', 'DeepSeek', 'Chat and coding'],
   ['deepseek-reasoner', 'DeepSeek', 'Reasoning tasks'],
@@ -132,7 +180,7 @@ export function DeveloperDocs() {
     "model": "qwen-max",
     "messages": [{"role": "user", "content": "请为新品写一段发布文案"}],
     "stream": true
-  }'`,
+  }'`.replaceAll('\n+', '\n'),
       python: `import os
 import requests
 
@@ -193,7 +241,15 @@ console.log(await response.json())`,
               <DocNavLink href='#quick-start' label={t('Quick start')} />
               <DocNavLink href='#authentication' label={t('Authentication')} />
               <DocNavLink href='#api-surface' label={t('API surface')} />
+              <DocNavLink
+                href='#generation'
+                label={t('Generation workflows')}
+              />
               <DocNavLink href='#models' label={t('Domestic model guide')} />
+              <DocNavLink
+                href='#references'
+                label={t('Official upstream references')}
+              />
               <DocNavLink
                 href='#governance'
                 label={t('Enterprise governance')}
@@ -425,8 +481,77 @@ curl ${apiBaseUrl}/videos/{video_id} \\
             </DocSection>
 
             <DocSection
-              id='models'
+              id='generation'
               eyebrow='05'
+              title={t('Generation workflows')}
+            >
+              <p className='text-muted-foreground mb-6 max-w-3xl text-sm leading-7'>
+                {t(
+                  'Use the same TokenFlow API key and gateway prefix for media generation. Configure the upstream channel and model alias in the console first.'
+                )}
+              </p>
+              <div className='border-border mb-8 border-l-2 pl-4 text-sm leading-7'>
+                <strong>{t('Model alias note')}</strong>
+                <p className='text-muted-foreground mt-1'>
+                  {t(
+                    'The model value in these examples is your TokenFlow alias, such as qwen-image or wan-video. It does not need to equal the upstream model name.'
+                  )}
+                </p>
+              </div>
+              <div className='space-y-6'>
+                <GenerationExample
+                  endpoint='/v1/images/generations'
+                  icon={<Image />}
+                  title={t('Text to image')}
+                  description={t(
+                    'Create product visuals, campaign assets, or concept images from a prompt.'
+                  )}
+                  code={`curl ${apiBaseUrl}/images/generations \\
+  -H "Authorization: Bearer $TOKENFLOW_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "qwen-image",
+    "prompt": "一张适合企业官网首屏的智能制造产品海报，简洁、专业、留白充足",
+    "size": "1024x1024",
+    "n": 1
+  }'`}
+                />
+                <GenerationExample
+                  endpoint='/v1/videos'
+                  icon={<Video />}
+                  title={t('Text to video')}
+                  description={t(
+                    'Create a long-running video task, poll it until completion, then download the generated file.'
+                  )}
+                  code={`curl ${apiBaseUrl}/videos \\
+  -H "Authorization: Bearer $TOKENFLOW_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "wan-video",
+    "prompt": "为企业新品制作一段 10 秒产品展示视频，镜头稳定，光线自然",
+    "seconds": 10
+  }'
+
+# Poll the task status
+curl ${apiBaseUrl}/videos/{video_id} \\
+  -H "Authorization: Bearer $TOKENFLOW_API_KEY"
+
+# Download after the task succeeds
+curl ${apiBaseUrl}/videos/{video_id}/content \\
+  -H "Authorization: Bearer $TOKENFLOW_API_KEY" \\
+  -o result.mp4`}
+                />
+              </div>
+              <p className='text-muted-foreground mt-6 text-xs leading-6'>
+                {t(
+                  'Media requests can be asynchronous and may have provider-specific fields. Use the linked upstream reference and the channel test tool to confirm the exact model parameters before production rollout.'
+                )}
+              </p>
+            </DocSection>
+
+            <DocSection
+              id='models'
+              eyebrow='06'
               title={t('Domestic model guide')}
             >
               <p className='text-muted-foreground mb-6 max-w-2xl text-sm leading-7'>
@@ -449,8 +574,40 @@ curl ${apiBaseUrl}/videos/{video_id} \\
             </DocSection>
 
             <DocSection
+              id='references'
+              eyebrow='07'
+              title={t('Official upstream references')}
+            >
+              <p className='text-muted-foreground mb-6 max-w-3xl text-sm leading-7'>
+                {t(
+                  'These are official provider documents for API keys, model capabilities, request fields, regional endpoints, and pricing. TokenFlow remains the stable gateway your applications call.'
+                )}
+              </p>
+              <div className='border-border grid gap-px overflow-hidden rounded-md border sm:grid-cols-2'>
+                {OFFICIAL_DOCS.map(([provider, title, description, href]) => (
+                  <a
+                    key={href}
+                    href={href}
+                    target='_blank'
+                    rel='noreferrer'
+                    className='bg-background hover:bg-muted/40 group p-5 transition-colors'
+                  >
+                    <div className='text-muted-foreground flex items-center justify-between font-mono text-xs uppercase'>
+                      <span>{provider}</span>
+                      <ExternalLink className='size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
+                    </div>
+                    <h3 className='mt-8 font-semibold'>{t(title)}</h3>
+                    <p className='text-muted-foreground mt-2 text-sm leading-6'>
+                      {t(description)}
+                    </p>
+                  </a>
+                ))}
+              </div>
+            </DocSection>
+
+            <DocSection
               id='governance'
-              eyebrow='06'
+              eyebrow='08'
               title={t('Enterprise governance')}
             >
               <div className='grid gap-8 md:grid-cols-2'>
@@ -485,7 +642,7 @@ curl ${apiBaseUrl}/videos/{video_id} \\
               </div>
             </DocSection>
 
-            <DocSection id='errors' eyebrow='07' title={t('Error handling')}>
+            <DocSection id='errors' eyebrow='09' title={t('Error handling')}>
               <div className='border-border overflow-hidden rounded-md border'>
                 {ERROR_CODES.map(([code, description]) => (
                   <div
@@ -564,6 +721,36 @@ function QuickStep(props: {
       <p className='text-muted-foreground mt-2 text-sm leading-6'>
         {props.text}
       </p>
+    </div>
+  )
+}
+
+function GenerationExample(props: {
+  code: string
+  description: string
+  endpoint: string
+  icon: React.ReactNode
+  title: string
+}) {
+  return (
+    <div className='border-border overflow-hidden rounded-md border'>
+      <div className='border-border bg-muted/30 flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3'>
+        <div className='flex items-center gap-3'>
+          <span className='text-[#d85f3f] [&>svg]:size-5'>{props.icon}</span>
+          <div>
+            <h3 className='font-semibold'>{props.title}</h3>
+            <p className='text-muted-foreground mt-1 text-xs'>
+              {props.description}
+            </p>
+          </div>
+        </div>
+        <code className='text-muted-foreground font-mono text-xs'>
+          {props.endpoint}
+        </code>
+      </div>
+      <pre className='overflow-x-auto bg-[#171816] p-5 font-mono text-xs leading-6 text-[#f2f2ec]'>
+        <code>{props.code}</code>
+      </pre>
     </div>
   )
 }
