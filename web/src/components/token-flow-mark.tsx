@@ -31,7 +31,7 @@ export function TokenFlowMark(props: TokenFlowMarkProps) {
     <span
       aria-hidden='true'
       className={cn(
-        'inline-flex size-7 shrink-0 items-center justify-center rounded-md bg-[#171816] text-[#66806a] ring-1 ring-black/10 dark:bg-[#f2f2ec] dark:text-[#8ca68f] dark:ring-white/10',
+        'inline-flex size-7 shrink-0 items-center justify-center rounded-md bg-[#171816] text-[#2f6f4e] ring-1 ring-black/10 dark:bg-[#f2f2ec] dark:text-[#74a989] dark:ring-white/10',
         props.className
       )}
     >

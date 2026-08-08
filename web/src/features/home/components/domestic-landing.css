@@ -6,7 +6,7 @@
   --nl-line: #d5e3ec;
   --nl-coral: var(--nl-green);
   --nl-blue: #6e92a8;
-  --nl-green: #66806a;
+  --nl-green: #2f6f4e;
   --nl-shadow: rgb(23 24 22 / 7%);
   background: var(--nl-paper);
   color: var(--nl-ink);
@@ -22,7 +22,7 @@
   --nl-line: #3b3d38;
   --nl-coral: var(--nl-green);
   --nl-blue: #8aadc0;
-  --nl-green: #8ca68f;
+  --nl-green: #74a989;
   --nl-shadow: rgb(0 0 0 / 24%);
 }
 
@@ -619,7 +619,7 @@
 }
 
 .nl-code-comment {
-  color: #8ca68f;
+  color: var(--nl-green);
 }
 
 .nl-trace-panel {

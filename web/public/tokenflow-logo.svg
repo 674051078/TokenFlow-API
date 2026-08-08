@@ -3,7 +3,7 @@
   <desc id="desc">A connected waypoint symbol representing token routing and flow.</desc>
   <rect x="8" y="8" width="240" height="240" rx="52" fill="#171816"/>
   <rect x="16" y="16" width="224" height="224" rx="44" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="4"/>
-  <g fill="none" stroke="#66806a" stroke-linecap="round" stroke-linejoin="round" stroke-width="15">
+  <g fill="none" stroke="#2f6f4e" stroke-linecap="round" stroke-linejoin="round" stroke-width="15">
     <path d="M118 74 74 118"/>
     <path d="m182 138-44 44"/>
     <path d="M78 128h100"/>
@@ -12,7 +12,7 @@
     <circle cx="128" cy="60" r="20"/>
     <circle cx="128" cy="196" r="20"/>
   </g>
-  <g fill="#171816" stroke="#66806a" stroke-width="12">
+  <g fill="#171816" stroke="#2f6f4e" stroke-width="12">
     <circle cx="60" cy="128" r="20"/>
     <circle cx="196" cy="128" r="20"/>
   </g>
