@@ -296,21 +296,6 @@ const OFFICIAL_DOC_GROUPS = [
   },
 ] as const
 
-const MODEL_USE_CASES = [
-  ['deepseek-chat', 'DeepSeek', 'Chat and coding'],
-  ['deepseek-reasoner', 'DeepSeek', 'Reasoning tasks'],
-  ['qwen-max', 'Qwen', 'Long context and Chinese understanding'],
-  ['qwen-image', 'Qwen', 'Text to image'],
-  ['wan-video', 'Qwen', 'Text to video'],
-  ['doubao-seed-1-6', 'Doubao', 'General conversation and content'],
-  ['doubao-vision', 'Doubao', 'Multimodal understanding'],
-  ['moonshot-v1-128k', 'Kimi', 'Long document processing'],
-  ['glm-4.5', 'GLM', 'Conversation and agent tasks'],
-  ['ernie-4.0-8k', 'Baidu Qianfan', 'Enterprise content and knowledge'],
-  ['abab6.5s-chat', 'MiniMax', 'Conversation and content generation'],
-  ['hunyuan-lite', 'Tencent Hunyuan', 'General text generation'],
-] as const
-
 const MODEL_CATALOG = [
   {
     id: 'qwen',
@@ -1234,23 +1219,6 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                     </div>
                   ))}
                 </div>
-              </div>
-              <div className='border-border mt-6 overflow-hidden rounded-md border'>
-                <div className='bg-muted/30 text-muted-foreground grid gap-2 border-b px-4 py-3 text-xs font-semibold uppercase md:grid-cols-[1.4fr_0.8fr_1.5fr]'>
-                  <span>{t('Recommended aliases')}</span>
-                  <span>{t('Provider')}</span>
-                  <span>{t('Best for')}</span>
-                </div>
-                {MODEL_USE_CASES.map(([model, provider, purpose]) => (
-                  <div
-                    key={model}
-                    className='border-border grid gap-2 border-b px-4 py-3 text-sm last:border-b-0 md:grid-cols-[1.4fr_0.8fr_1.5fr]'
-                  >
-                    <code className='font-mono text-xs'>{model}</code>
-                    <strong>{provider}</strong>
-                    <span className='text-muted-foreground'>{t(purpose)}</span>
-                  </div>
-                ))}
               </div>
               <div className='border-border mt-6 overflow-hidden rounded-md border'>
                 <div className='bg-muted/30 border-border border-b px-4 py-4'>
