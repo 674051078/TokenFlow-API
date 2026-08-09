@@ -107,6 +107,49 @@ const API_SURFACE = [
   ],
 ] as const
 
+const ENDPOINT_GUIDES = [
+  [
+    'Text generation',
+    'POST',
+    '/v1/chat/completions',
+    'Chat, reasoning, coding, structured output, and multimodal text requests.',
+    'deepseek-chat · qwen-max · doubao-seed-1-6',
+    'Synchronous or streaming',
+  ],
+  [
+    'Image generation',
+    'POST',
+    '/v1/images/generations',
+    'Text-to-image, image editing, and creative asset generation.',
+    'qwen-image · doubao-image · hunyuan-image',
+    'Returns image data or result URLs',
+  ],
+  [
+    'Video tasks',
+    'POST',
+    '/v1/videos',
+    'Text-to-video and image-to-video tasks that run asynchronously.',
+    'wan-video · doubao-video · hunyuan-video',
+    'Create, poll, then download',
+  ],
+  [
+    'Speech synthesis',
+    'POST',
+    '/v1/audio/speech',
+    'Generate narration, voice prompts, and audio assets.',
+    'qwen-tts · minimax-speech · doubao-tts',
+    'Returns an audio stream',
+  ],
+  [
+    'Embeddings',
+    'POST',
+    '/v1/embeddings',
+    'Create vectors for search, RAG, and enterprise knowledge bases.',
+    'qwen-embedding · doubao-embedding · glm-embedding',
+    'Returns vector data',
+  ],
+] as const
+
 const OFFICIAL_DOC_GROUPS = [
   {
     id: 'qwen',
@@ -711,6 +754,56 @@ console.log(await response.json())`,
                   </div>
                 ))}
               </div>
+              <div className='border-border mt-6 overflow-hidden rounded-md border'>
+                <div className='bg-muted/30 border-border border-b px-4 py-4'>
+                  <h3 className='font-semibold'>
+                    {t('Choose the endpoint by capability')}
+                  </h3>
+                  <p className='text-muted-foreground mt-2 text-sm leading-6'>
+                    {t(
+                      'The endpoint selects the capability. The model alias selects the domestic provider route. Upstream API differences are handled by TokenFlow channels.'
+                    )}
+                  </p>
+                </div>
+                <div className='bg-border grid gap-px md:grid-cols-2'>
+                  {ENDPOINT_GUIDES.map(
+                    ([
+                      capability,
+                      method,
+                      endpoint,
+                      description,
+                      aliases,
+                      mode,
+                    ]) => (
+                      <div key={endpoint} className='bg-background p-4'>
+                        <div className='flex flex-wrap items-center gap-2'>
+                          <span className='font-mono text-[10px] font-semibold text-[#2f6f4e] dark:text-[#74a989]'>
+                            {method}
+                          </span>
+                          <code className='font-mono text-xs'>{endpoint}</code>
+                        </div>
+                        <h4 className='mt-4 text-sm font-semibold'>
+                          {t(capability)}
+                        </h4>
+                        <p className='text-muted-foreground mt-2 text-xs leading-6'>
+                          {t(description)}
+                        </p>
+                        <div className='mt-4 flex flex-col gap-1 text-xs'>
+                          <span className='text-muted-foreground'>
+                            {t('Example model aliases')}
+                          </span>
+                          <code className='font-mono break-words'>
+                            {aliases}
+                          </code>
+                          <span className='text-muted-foreground mt-1'>
+                            {t(mode)}
+                          </span>
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              </div>
               <div className='border-border mt-8 overflow-hidden rounded-md border'>
                 <div className='border-border bg-muted/30 flex items-center justify-between border-b px-4 py-3'>
                   <div>
@@ -867,6 +960,14 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                   'Choose a domestic provider and model alias by task. Your application keeps the same request format when the route changes.'
                 )}
               </p>
+              <div className='border-border mb-6 border-l-2 pl-4 text-sm leading-7'>
+                <strong>{t('Routing rule')}</strong>
+                <p className='text-muted-foreground mt-1'>
+                  {t(
+                    'Use the capability endpoint first, then pass the alias configured for that capability. Do not send an image model to the chat endpoint or a text model to the image endpoint.'
+                  )}
+                </p>
+              </div>
               <div className='border-border overflow-hidden rounded-md border'>
                 <nav
                   className='border-border flex gap-2 overflow-x-auto border-b p-3'
