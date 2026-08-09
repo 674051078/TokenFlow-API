@@ -372,6 +372,201 @@ const MODEL_CATALOG = [
   },
 ] as const
 
+type ProviderApiGuide = readonly [
+  task: string,
+  model: string,
+  tokenFlowEndpoint: string,
+  upstreamEndpoint: string,
+  reference: string,
+]
+
+const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
+  qwen: [
+    [
+      'Text generation',
+      'qwen-max',
+      'POST /v1/chat/completions',
+      'POST /compatible-mode/v1/chat/completions',
+      'https://help.aliyun.com/zh/model-studio/text-generation',
+    ],
+    [
+      'Image generation',
+      'qwen-image',
+      'POST /v1/images/generations',
+      'POST /api/v1/services/aigc/multimodal-generation/generation',
+      'https://help.aliyun.com/en/model-studio/qwen-image-api',
+    ],
+    [
+      'Video tasks',
+      'wan-video',
+      'POST /v1/videos',
+      'POST /api/v1/services/aigc/video-generation/video-synthesis',
+      'https://help.aliyun.com/en/model-studio/text-to-video-api-reference',
+    ],
+  ],
+  deepseek: [
+    [
+      'Text generation',
+      'deepseek-chat',
+      'POST /v1/chat/completions',
+      'POST /chat/completions',
+      'https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/',
+    ],
+    [
+      'Text generation',
+      'deepseek-reasoner',
+      'POST /v1/chat/completions',
+      'POST /chat/completions',
+      'https://api-docs.deepseek.com/zh-cn/guides/reasoning_model',
+    ],
+  ],
+  doubao: [
+    [
+      'Text generation',
+      'doubao-seed-1-6',
+      'POST /v1/chat/completions',
+      'POST /api/v3/chat/completions',
+      'https://www.volcengine.com/docs/82379/66619f8df281250274ef4f88?lang=zh',
+    ],
+    [
+      'Multimodal understanding',
+      'doubao-vision',
+      'POST /v1/chat/completions',
+      'POST /api/v3/chat/completions',
+      'https://www.volcengine.com/docs/82379/66619f8df281250274ef4f88?lang=zh',
+    ],
+    [
+      'Image generation',
+      'doubao-image',
+      'POST /v1/images/generations',
+      'Ark image generation API',
+      'https://www.volcengine.com/docs/82379/1399008?lang=zh',
+    ],
+    [
+      'Video tasks',
+      'doubao-video',
+      'POST /v1/videos',
+      'Ark video generation API',
+      'https://www.volcengine.com/docs/82379/1399008?lang=zh',
+    ],
+  ],
+  kimi: [
+    [
+      'Text generation',
+      'moonshot-v1-128k',
+      'POST /v1/chat/completions',
+      'POST /v1/chat/completions',
+      'https://platform.kimi.com/docs/api/chat',
+    ],
+    [
+      'Multimodal understanding',
+      'kimi-k2.6',
+      'POST /v1/chat/completions',
+      'POST /v1/chat/completions',
+      'https://platform.kimi.com/docs/introduction',
+    ],
+  ],
+  glm: [
+    [
+      'Text generation',
+      'glm-4.5',
+      'POST /v1/chat/completions',
+      'POST /api/paas/v4/chat/completions',
+      'https://docs.bigmodel.cn/cn/guide/develop/http/introduction',
+    ],
+    [
+      'Image generation',
+      'glm-image',
+      'POST /v1/images/generations',
+      'POST /api/paas/v4/images/generations',
+      'https://docs.bigmodel.cn/cn/guide/models/image-generation/glm-image',
+    ],
+  ],
+  qianfan: [
+    [
+      'Text generation',
+      'ernie-4.0-8k',
+      'POST /v1/chat/completions',
+      'POST /v2/chat/completions',
+      'https://cloud.baidu.com/doc/qianfan/s/qmh4sv5vi',
+    ],
+    [
+      'Image generation',
+      'qianfan-image',
+      'POST /v1/images/generations',
+      'POST /v2/images/generations',
+      'https://cloud.baidu.com/doc/qianfan-api/s/8m7u6un8a',
+    ],
+    [
+      'Video tasks',
+      'qianfan-video',
+      'POST /v1/videos',
+      'POST /beta/video/generations/qianfan-video',
+      'https://cloud.baidu.com/doc/qianfan-api/s/wmlj5vv6n',
+    ],
+    [
+      'Embeddings',
+      'qianfan-embedding',
+      'POST /v1/embeddings',
+      'POST /v2/embeddings',
+      'https://cloud.baidu.com/doc/qianfan/s/qmh4sv5vi',
+    ],
+  ],
+  minimax: [
+    [
+      'Text generation',
+      'abab6.5s-chat',
+      'POST /v1/chat/completions',
+      'POST /v1/text/chatcompletion_v2',
+      'https://platform.minimaxi.com/docs/api-reference/text-post',
+    ],
+    [
+      'Speech synthesis',
+      'minimax-speech',
+      'POST /v1/audio/speech',
+      'POST /v1/t2a_v2',
+      'https://platform.minimaxi.com/docs/api-reference/speech-t2a-http',
+    ],
+    [
+      'Image generation',
+      'minimax-image',
+      'POST /v1/images/generations',
+      'MiniMax image generation API',
+      'https://platform.minimaxi.com/docs/api-reference/api-overview',
+    ],
+    [
+      'Video tasks',
+      'minimax-video',
+      'POST /v1/videos',
+      'POST /v1/video_generation',
+      'https://platform.minimaxi.com/docs/guides/video-generation',
+    ],
+  ],
+  hunyuan: [
+    [
+      'Text generation',
+      'hunyuan-lite',
+      'POST /v1/chat/completions',
+      'Tencent Cloud Chat API',
+      'https://cloud.tencent.com/document/product/1729/111007',
+    ],
+    [
+      'Image generation',
+      'hunyuan-image',
+      'POST /v1/images/generations',
+      'Tencent Cloud image generation API',
+      'https://cloud.tencent.cn/document/api/1668/88077',
+    ],
+    [
+      'Video tasks',
+      'hunyuan-video',
+      'POST /v1/videos',
+      'SubmitHunyuanToVideoJob / DescribeHunyuanToVideoJob',
+      'https://cloud.tencent.com/document/product/1616/107795',
+    ],
+  ],
+}
+
 const DOC_NAV_ITEMS = [
   ['#overview', 'Overview'],
   ['#scenarios', 'Enterprise scenarios'],
@@ -492,6 +687,8 @@ export function DeveloperDocs() {
   const selectedModelCatalog =
     MODEL_CATALOG.find((group) => group.id === selectedProvider) ??
     MODEL_CATALOG[0]
+  const selectedProviderApiGuide =
+    PROVIDER_API_GUIDES[selectedProvider] ?? PROVIDER_API_GUIDES.qwen
   const codeExamples = useMemo(
     () => ({
       curl: `curl ${apiBaseUrl}/chat/completions \\\n+  -H "Authorization: Bearer $TOKENFLOW_API_KEY" \\\n+  -H "Content-Type: application/json" \\\n+  -d '{
@@ -943,6 +1140,21 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
   -o result.mp4`}
                 />
               </div>
+              <div className='border-border bg-muted/30 mt-6 rounded-md border-l-2 border-[#2f6f4e] px-5 py-4 text-sm leading-7 dark:border-[#74a989]'>
+                <strong>
+                  {t('Unified gateway, different upstream protocols')}
+                </strong>
+                <p className='text-muted-foreground mt-1'>
+                  {t(
+                    'TokenFlow standardizes the public URL, authentication, core request shape, and common response handling. It does not make every provider parameter, model capability, task lifecycle, or output field identical.'
+                  )}
+                </p>
+                <p className='text-muted-foreground mt-2'>
+                  {t(
+                    'Use the endpoint guide for the common path, then open the selected provider reference for provider-specific fields. Unsupported fields should be removed or configured through the channel adapter.'
+                  )}
+                </p>
+              </div>
               <p className='text-muted-foreground mt-6 text-xs leading-6'>
                 {t(
                   'Media requests can be asynchronous and may have provider-specific fields. Use the linked upstream reference and the channel test tool to confirm the exact model parameters before production rollout.'
@@ -1040,6 +1252,83 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                   </div>
                 ))}
               </div>
+              <div className='border-border mt-6 overflow-hidden rounded-md border'>
+                <div className='bg-muted/30 border-border border-b px-4 py-4'>
+                  <h3 className='font-semibold'>
+                    {t('Task and endpoint mapping')}
+                  </h3>
+                  <p className='text-muted-foreground mt-2 text-sm leading-6'>
+                    {t(
+                      'Select a provider above to see which model alias, TokenFlow endpoint, and native provider API belong to each task.'
+                    )}
+                  </p>
+                </div>
+                <div className='bg-muted/30 hidden border-b px-4 py-3 text-xs font-semibold uppercase md:grid md:grid-cols-[1fr_1.1fr_1.3fr_1.7fr] md:gap-4'>
+                  <span>{t('Task')}</span>
+                  <span>{t('TokenFlow model alias')}</span>
+                  <span>{t('TokenFlow endpoint')}</span>
+                  <span>{t('Native provider API')}</span>
+                </div>
+                {selectedProviderApiGuide.map(
+                  ([
+                    task,
+                    model,
+                    tokenFlowEndpoint,
+                    upstreamEndpoint,
+                    reference,
+                  ]) => (
+                    <div
+                      key={`${task}-${model}`}
+                      className='border-border grid gap-3 border-b px-4 py-4 text-sm last:border-b-0 md:grid-cols-[1fr_1.1fr_1.3fr_1.7fr] md:items-start md:gap-4'
+                    >
+                      <div>
+                        <span className='text-muted-foreground mb-1 block text-xs md:hidden'>
+                          {t('Task')}
+                        </span>
+                        <strong>{t(task)}</strong>
+                      </div>
+                      <div>
+                        <span className='text-muted-foreground mb-1 block text-xs md:hidden'>
+                          {t('TokenFlow model alias')}
+                        </span>
+                        <code className='font-mono text-xs text-[#2f6f4e] dark:text-[#74a989]'>
+                          {model}
+                        </code>
+                      </div>
+                      <div>
+                        <span className='text-muted-foreground mb-1 block text-xs md:hidden'>
+                          {t('TokenFlow endpoint')}
+                        </span>
+                        <code className='font-mono text-xs'>
+                          {tokenFlowEndpoint}
+                        </code>
+                      </div>
+                      <div>
+                        <span className='text-muted-foreground mb-1 block text-xs md:hidden'>
+                          {t('Native provider API')}
+                        </span>
+                        <code className='font-mono text-xs break-words'>
+                          {upstreamEndpoint}
+                        </code>
+                        <a
+                          href={reference}
+                          target='_blank'
+                          rel='noreferrer'
+                          className='text-muted-foreground hover:text-foreground mt-2 inline-flex items-center gap-1 text-xs underline underline-offset-4'
+                        >
+                          {t('Open official reference')}
+                          <ExternalLink className='size-3' />
+                        </a>
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+              <p className='text-muted-foreground mt-4 text-xs leading-6'>
+                {t(
+                  'The native API column is for comparison only. Your application should call the TokenFlow endpoint and use the configured alias; provider-native fields are translated by the channel when supported.'
+                )}
+              </p>
             </DocSection>
 
             <DocSection
