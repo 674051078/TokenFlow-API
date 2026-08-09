@@ -149,19 +149,19 @@ export function DomesticLanding(props: DomesticLandingProps) {
           <div className='nl-hero-copy'>
             <div className='nl-eyebrow'>
               <span className='nl-live-dot' />
-              {props.brandName} · DOMESTIC MODEL GATEWAY
+              {props.brandName} · CHINA MODEL API FOR THE WORLD
             </div>
 
             <h1 id='landing-title'>
-              企业 AI 生产链路
+              中国模型，全球可用
               <br />
-              <span>统一接入一个网关</span>
+              <span>面向海外团队的 AI API</span>
             </h1>
 
             <p className='nl-lead'>
-              TokenFlow API 面向需要稳定交付 AI
-              能力的企业团队，统一接入文本、图片、视频、语音与向量模型。
-              用同一套 API Key、路由和计费体系，让模型切换不再牵动业务代码。
+              TokenFlow API 帮助海外企业以更具成本优势的方式接入 DeepSeek、
+              Qwen、豆包、Kimi、GLM 等中国模型。使用熟悉的 OpenAI 兼容接口，
+              通过一个网关完成模型路由、额度、计费与稳定性治理。
             </p>
 
             <div className='nl-actions'>
@@ -193,13 +193,13 @@ export function DomesticLanding(props: DomesticLandingProps) {
 
             <div className='nl-proof-list' aria-label='网关核心能力'>
               <span>
-                <Check aria-hidden /> 一个 API 接入
+                <Check aria-hidden /> 海外团队快速接入
               </span>
               <span>
-                <Check aria-hidden /> 国内模型路由
+                <Check aria-hidden /> 中国模型低成本路由
               </span>
               <span>
-                <Check aria-hidden /> 用量与成本可视
+                <Check aria-hidden /> 统一 API 与账单
               </span>
             </div>
           </div>
@@ -221,12 +221,12 @@ export function DomesticLanding(props: DomesticLandingProps) {
         <div className='nl-shell'>
           <div className='nl-section-heading nl-heading-split'>
             <div>
-              <span className='nl-kicker'>5 MINUTES TO FIRST CALL</span>
-              <h2 id='migration-title'>五分钟接入第一条生产链路</h2>
+              <span className='nl-kicker'>5 MINUTES TO CHINA MODELS</span>
+              <h2 id='migration-title'>五分钟接入中国模型</h2>
             </div>
             <p>
-              保留熟悉的 OpenAI 兼容请求结构，只需要替换 Base URL 和 API Key。
-              先跑通一条业务请求，再逐步把模型、额度和故障切换收进控制台。
+              不改现有 AI 应用，只需要替换 Base URL 和 API Key。
+              海外团队可以先接入一款中国模型，再逐步扩展到图像、视频、语音和知识库场景。
             </p>
           </div>
 
@@ -247,7 +247,7 @@ export function DomesticLanding(props: DomesticLandingProps) {
               </div>
               <div className='nl-code-block' aria-label='curl 请求示例'>
                 <span className='nl-code-comment'>
-                  # 调用 DeepSeek 推理模型
+                  # Call a Chinese reasoning model through TokenFlow
                 </span>
                 <code>curl /v1/chat/completions \</code>
                 <code>
@@ -285,7 +285,7 @@ export function DomesticLanding(props: DomesticLandingProps) {
               </div>
               <div className='nl-response'>
                 <span>response.chunk</span>
-                <p>请求已通过统一网关完成鉴权、额度检查与模型路由。</p>
+                <p>请求已完成鉴权、额度检查、跨境入口与中国模型路由。</p>
                 <div>
                   <em>input 1,248</em>
                   <em>output 386</em>
@@ -301,11 +301,12 @@ export function DomesticLanding(props: DomesticLandingProps) {
         <div className='nl-shell'>
           <div className='nl-section-heading nl-heading-split'>
             <div>
-              <span className='nl-kicker'>DOMESTIC MODEL CATALOG</span>
-              <h2 id='models-title'>按任务选模型，按策略管路由</h2>
+              <span className='nl-kicker'>CHINA MODELS FOR GLOBAL TEAMS</span>
+              <h2 id='models-title'>为海外业务选择更有成本优势的模型</h2>
             </div>
             <p>
-              从文本、视觉到视频和知识库能力，统一管理模型别名、分组、倍率与故障切换。
+              从文本、视觉到视频和知识库能力，统一管理模型别名、分组、倍率与故障切换，
+              让海外业务更容易接入中国模型生态。
             </p>
           </div>
 
@@ -344,8 +345,8 @@ export function DomesticLanding(props: DomesticLandingProps) {
               <h2 id='workflows-title'>从模型能力，到可复用的业务流程</h2>
             </div>
             <p>
-              面向企业真实生产场景设计。每个团队都能使用自己的 API
-              Key、模型范围、额度和成本策略。
+              面向海外企业真实生产场景设计。每个团队都能使用自己的 API
+              Key、模型范围、额度和成本策略，在可控成本下扩展 AI 业务。
             </p>
           </div>
 
@@ -389,7 +390,7 @@ export function DomesticLanding(props: DomesticLandingProps) {
               <ControlPoint
                 icon={<ShieldCheck />}
                 title='切得稳'
-                text='用优先级、权重和自动重试编排国内上游渠道。'
+                text='用优先级、权重和自动重试编排中国上游渠道。'
               />
             </div>
           </div>
@@ -515,7 +516,7 @@ export function DomesticLanding(props: DomesticLandingProps) {
       <section className='nl-final-cta' aria-labelledby='cta-title'>
         <div className='nl-shell'>
           <span className='nl-kicker'>READY WHEN YOU ARE</span>
-          <h2 id='cta-title'>把国内模型能力接进真实业务</h2>
+          <h2 id='cta-title'>把中国模型能力带到全球业务</h2>
           <p>
             从一个 API Key
             开始，先跑通一条请求，再把路由、成本和团队权限逐步收进同一个控制面。
@@ -546,7 +547,10 @@ export function DomesticLanding(props: DomesticLandingProps) {
 
 function GatewayRouteBoard(props: { displayName: string }) {
   return (
-    <div className='nl-route-board' aria-label='国内模型统一路由示意'>
+    <div
+      className='nl-route-board'
+      aria-label='中国模型面向海外业务的统一路由示意'
+    >
       <div className='nl-board-head'>
         <div>
           <span className='nl-window-dot' />
@@ -562,7 +566,7 @@ function GatewayRouteBoard(props: { displayName: string }) {
           <Code2 aria-hidden />
           <div>
             <strong>Client Request</strong>
-            <span>国内业务应用</span>
+            <span>海外业务应用</span>
           </div>
         </div>
 

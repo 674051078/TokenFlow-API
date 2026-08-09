@@ -559,7 +559,7 @@ const DOC_NAV_ITEMS = [
   ['#authentication', 'Authentication'],
   ['#api-surface', 'API surface'],
   ['#generation', 'Generation workflows'],
-  ['#models', 'Domestic model guide'],
+  ['#models', 'China model guide for global teams'],
   ['#references', 'Official upstream references'],
   ['#governance', 'Enterprise governance'],
   ['#errors', 'Error handling'],
@@ -798,14 +798,14 @@ console.log(await response.json())`,
             >
               <div className='text-muted-foreground mb-5 flex items-center gap-2 font-mono text-xs uppercase'>
                 <span className='size-2 rounded-full bg-[#2f6f4e]' />
-                {t('TokenFlow API · Enterprise AI Gateway')}
+                {t('TokenFlow API · Global China Model Gateway')}
               </div>
               <h1 className='max-w-4xl text-4xl leading-tight font-semibold tracking-tight sm:text-6xl'>
-                {t('Put every AI production workflow behind one gateway')}
+                {t('Connect China models to global business workflows')}
               </h1>
               <p className='text-muted-foreground mt-5 max-w-3xl text-base leading-8'>
                 {t(
-                  'TokenFlow API gives enterprise teams one stable interface for domestic text, image, video, speech, and embedding models, with unified keys, routing, quotas, billing, and operational visibility.'
+                  'TokenFlow API gives overseas teams a cost-conscious way to access Chinese text, image, video, speech, and embedding models, with one compatible API, unified keys, routing, quotas, billing, and operational visibility.'
                 )}
               </p>
               <div className='mt-7 flex flex-wrap gap-3'>
@@ -943,7 +943,7 @@ console.log(await response.json())`,
                   </h3>
                   <p className='text-muted-foreground mt-2 text-sm leading-6'>
                     {t(
-                      'The endpoint selects the capability. The model alias selects the domestic provider route. Upstream API differences are handled by TokenFlow channels.'
+                      'The endpoint selects the capability. The model alias selects the Chinese provider route. Upstream API differences are handled by TokenFlow channels.'
                     )}
                   </p>
                 </div>
@@ -1150,11 +1150,11 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
             <DocSection
               id='models'
               eyebrow='06'
-              title={t('Domestic model guide')}
+              title={t('China model guide for global teams')}
             >
               <p className='text-muted-foreground mb-6 max-w-2xl text-sm leading-7'>
                 {t(
-                  'Choose a domestic provider and model alias by task. Your application keeps the same request format when the route changes.'
+                  'Choose a Chinese provider and model alias by task. Your application keeps the same request format when the route changes.'
                 )}
               </p>
               <div className='border-border mb-6 border-l-2 pl-4 text-sm leading-7'>
@@ -1168,7 +1168,7 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
               <div className='border-border overflow-hidden rounded-md border'>
                 <nav
                   className='border-border flex gap-2 overflow-x-auto border-b p-3'
-                  aria-label={t('Domestic model providers')}
+                  aria-label={t('China model providers')}
                   role='tablist'
                 >
                   {MODEL_CATALOG.map((group) => (
