@@ -5492,6 +5492,12 @@
     "Read the result URL or output object, then download the asset from the returned endpoint.": "读取结果 URL 或输出对象，再从返回的 Endpoint 下载文件。",
     "Keep the task ID and request ID, read the error detail, and fix the model or input before retrying.": "保留任务 ID 和 request ID，读取错误详情，修正模型或输入后再重试。",
     "Check the request ID, API key status, remaining quota, model access, request parameters, and upstream channel status in that order.": "按顺序检查 request ID、API Key 状态、剩余额度、模型权限、请求参数和上游渠道状态。",
-    "Select an official API reference": "请选择官方 API 参考"
+    "Select an official API reference": "请选择官方 API 参考",
+    "International endpoints available; model availability varies by region": "支持国际地域 Endpoint；具体模型是否可用取决于所在地域",
+    "English API docs are available; account access may vary by region": "提供英文 API 文档；账号权限可能因地域而不同",
+    "Access and model availability depend on region and account": "访问权限和模型可用性取决于地域与账号",
+    "English docs are available; account and region may limit access": "提供英文文档；账号和地域可能限制访问",
+    "Primarily China Mainland account and documentation": "主要面向中国大陆账号，文档也以中文为主",
+    "Tencent Cloud region and account access are required": "需要匹配腾讯云地域和账号权限"
   }
 }

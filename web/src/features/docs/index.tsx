@@ -154,53 +154,57 @@ const OFFICIAL_DOC_GROUPS = [
   {
     id: 'qwen',
     provider: 'Qwen',
+    access:
+      'International endpoints available; model availability varies by region',
     docs: [
       [
         'Qwen API quick start',
         'Create a Qwen API key, choose a region, and make the first OpenAI-compatible request.',
-        'https://help.aliyun.com/zh/model-studio/first-api-call-to-qwen',
+        'https://www.alibabacloud.com/help/en/model-studio/first-api-call-to-qwen',
       ],
       [
         'Qwen text generation reference',
         'Review chat, Responses, and native DashScope interfaces before mapping a model into TokenFlow.',
-        'https://help.aliyun.com/zh/model-studio/qwen-api-reference/',
+        'https://www.alibabacloud.com/help/en/model-studio/qwen-api-reference',
       ],
       [
         'Qwen text-to-image reference',
         'Check prompt, size, reference image, asynchronous task, and result fields for image generation.',
-        'https://help.aliyun.com/zh/model-studio/text-to-image-api-reference',
+        'https://www.alibabacloud.com/help/en/model-studio/text-to-image-v2-api-reference',
       ],
       [
         'Qwen text-to-video reference',
         'Check regional endpoints, async task creation, polling, duration, resolution, and prompt fields.',
-        'https://help.aliyun.com/zh/model-studio/text-to-video-api-reference',
+        'https://www.alibabacloud.com/help/en/model-studio/text-to-video-api-reference',
       ],
     ],
   },
   {
     id: 'deepseek',
     provider: 'DeepSeek',
+    access: 'English API docs are available; account access may vary by region',
     docs: [
       [
         'DeepSeek first API call',
         'Use the official OpenAI-compatible endpoint to verify an API key and a text generation request.',
-        'https://api-docs.deepseek.com/zh-cn/guides/reasoning_model',
+        'https://api-docs.deepseek.com/',
       ],
       [
         'DeepSeek chat completion reference',
         'Review streaming, reasoning, tool calls, response format, and model-specific request fields.',
-        'https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/',
+        'https://api-docs.deepseek.com/api/create-chat-completion/',
       ],
       [
         'DeepSeek JSON output guide',
         'Use structured JSON responses for extraction, workflow automation, and downstream business systems.',
-        'https://api-docs.deepseek.com/zh-cn/guides/json_mode/',
+        'https://api-docs.deepseek.com/guides/json_mode/',
       ],
     ],
   },
   {
     id: 'doubao',
     provider: 'Doubao / Volcengine Ark',
+    access: 'Access and model availability depend on region and account',
     docs: [
       [
         'Doubao and Ark documentation center',
@@ -217,6 +221,7 @@ const OFFICIAL_DOC_GROUPS = [
   {
     id: 'kimi',
     provider: 'Kimi / Moonshot AI',
+    access: 'English docs are available; account and region may limit access',
     docs: [
       [
         'Kimi API concepts',
@@ -233,6 +238,7 @@ const OFFICIAL_DOC_GROUPS = [
   {
     id: 'glm',
     provider: 'GLM / Zhipu AI',
+    access: 'Primarily China Mainland account and documentation',
     docs: [
       [
         'GLM HTTP API quick start',
@@ -244,6 +250,7 @@ const OFFICIAL_DOC_GROUPS = [
   {
     id: 'qianfan',
     provider: 'Baidu Qianfan',
+    access: 'Primarily China Mainland account and documentation',
     docs: [
       [
         'Qianfan documentation center',
@@ -265,6 +272,7 @@ const OFFICIAL_DOC_GROUPS = [
   {
     id: 'minimax',
     provider: 'MiniMax',
+    access: 'English docs are available; account and region may limit access',
     docs: [
       [
         'MiniMax API overview',
@@ -281,6 +289,7 @@ const OFFICIAL_DOC_GROUPS = [
   {
     id: 'hunyuan',
     provider: 'Tencent Hunyuan',
+    access: 'Tencent Cloud region and account access are required',
     docs: [
       [
         'Hunyuan image generation API',
@@ -1344,6 +1353,9 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                     {t('Select an official API reference')}
                   </span>
                 </div>
+                <p className='text-muted-foreground mb-4 text-xs leading-5'>
+                  {t(selectedProviderGroup.access)}
+                </p>
                 <div className='border-border grid gap-px overflow-hidden rounded-md border sm:grid-cols-2'>
                   {selectedProviderGroup.docs.map(
                     ([title, description, href]) => (
