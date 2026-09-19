@@ -24,7 +24,6 @@ import {
   CheckCircle2,
   Clapperboard,
   Copy,
-  ExternalLink,
   FileText,
   Image,
   KeyRound,
@@ -150,161 +149,6 @@ const ENDPOINT_GUIDES = [
   ],
 ] as const
 
-const OFFICIAL_DOC_GROUPS = [
-  {
-    id: 'qwen',
-    provider: 'Qwen',
-    access:
-      'International endpoints available; model availability varies by region',
-    docs: [
-      [
-        'Qwen API quick start',
-        'Create a Qwen API key, choose a region, and make the first OpenAI-compatible request.',
-        'https://www.alibabacloud.com/help/en/model-studio/first-api-call-to-qwen',
-      ],
-      [
-        'Qwen text generation reference',
-        'Review chat, Responses, and native DashScope interfaces before mapping a model into TokenFlow.',
-        'https://www.alibabacloud.com/help/en/model-studio/qwen-api-reference',
-      ],
-      [
-        'Qwen text-to-image reference',
-        'Check prompt, size, reference image, asynchronous task, and result fields for image generation.',
-        'https://www.alibabacloud.com/help/en/model-studio/text-to-image-v2-api-reference',
-      ],
-      [
-        'Qwen text-to-video reference',
-        'Check regional endpoints, async task creation, polling, duration, resolution, and prompt fields.',
-        'https://www.alibabacloud.com/help/en/model-studio/text-to-video-api-reference',
-      ],
-    ],
-  },
-  {
-    id: 'deepseek',
-    provider: 'DeepSeek',
-    access: 'English API docs are available; account access may vary by region',
-    docs: [
-      [
-        'DeepSeek first API call',
-        'Use the official OpenAI-compatible endpoint to verify an API key and a text generation request.',
-        'https://api-docs.deepseek.com/',
-      ],
-      [
-        'DeepSeek chat completion reference',
-        'Review streaming, reasoning, tool calls, response format, and model-specific request fields.',
-        'https://api-docs.deepseek.com/api/create-chat-completion/',
-      ],
-      [
-        'DeepSeek JSON output guide',
-        'Use structured JSON responses for extraction, workflow automation, and downstream business systems.',
-        'https://api-docs.deepseek.com/guides/json_mode/',
-      ],
-    ],
-  },
-  {
-    id: 'doubao',
-    provider: 'Doubao / Volcengine Ark',
-    access: 'Access and model availability depend on region and account',
-    docs: [
-      [
-        'Doubao and Ark documentation center',
-        'Find model services, authentication, endpoint configuration, and enterprise deployment guidance.',
-        'https://www.volcengine.com/docs?lang=zh',
-      ],
-      [
-        'Ark model inference API',
-        'Review chat, Responses, image, video, and embedding capabilities available through Ark.',
-        'https://www.volcengine.com/docs/82379/66619f8df281250274ef4f88?lang=zh',
-      ],
-    ],
-  },
-  {
-    id: 'kimi',
-    provider: 'Kimi / Moonshot AI',
-    access: 'English docs are available; account and region may limit access',
-    docs: [
-      [
-        'Kimi API concepts',
-        'Understand Kimi models, API keys, context windows, and the OpenAI-compatible integration model.',
-        'https://platform.kimi.com/docs/introduction',
-      ],
-      [
-        'Kimi API overview',
-        'Use the official endpoint and SDK examples when configuring a Kimi channel in TokenFlow.',
-        'https://platform.kimi.com/docs/api/overview',
-      ],
-    ],
-  },
-  {
-    id: 'glm',
-    provider: 'GLM / Zhipu AI',
-    access: 'Primarily China Mainland account and documentation',
-    docs: [
-      [
-        'GLM HTTP API quick start',
-        'Create credentials and send an HTTP request to the official GLM model service.',
-        'https://docs.bigmodel.cn/cn/guide/develop/http/introduction',
-      ],
-    ],
-  },
-  {
-    id: 'qianfan',
-    provider: 'Baidu Qianfan',
-    access: 'Primarily China Mainland account and documentation',
-    docs: [
-      [
-        'Qianfan documentation center',
-        'Browse enterprise model, Agent, multimodal, pricing, and authentication documentation.',
-        'https://cloud.baidu.com/doc/qianfan/index.html',
-      ],
-      [
-        'Qianfan text generation API',
-        'Review the OpenAI-compatible chat endpoint, API key permissions, model field, and messages format.',
-        'https://cloud.baidu.com/doc/qianfan-api/s/3m7of64lb',
-      ],
-      [
-        'Qianfan multimodal inference API',
-        'Check text, image, video, image editing, and embedding capabilities exposed by the V2 API.',
-        'https://cloud.baidu.com/doc/qianfan/s/qmh4sv5vi',
-      ],
-    ],
-  },
-  {
-    id: 'minimax',
-    provider: 'MiniMax',
-    access: 'English docs are available; account and region may limit access',
-    docs: [
-      [
-        'MiniMax API overview',
-        'Review text, speech, image, video, music, and file APIs in the official platform index.',
-        'https://platform.minimaxi.com/docs/api-reference/api-overview',
-      ],
-      [
-        'MiniMax API key and access FAQ',
-        'Find official instructions for creating API keys, quotas, and account-level access.',
-        'https://platform.minimaxi.com/docs/faq/about-apis',
-      ],
-    ],
-  },
-  {
-    id: 'hunyuan',
-    provider: 'Tencent Hunyuan',
-    access: 'Tencent Cloud region and account access are required',
-    docs: [
-      [
-        'Hunyuan image generation API',
-        'Review Tencent Cloud authentication, image generation tasks, parameters, and result polling.',
-        'https://cloud.tencent.cn/document/api/1668/88077',
-      ],
-      [
-        'Hunyuan video generation task API',
-        'Review text-to-video and image-to-video task creation, status queries, and API Explorer usage.',
-        'https://cloud.tencent.com/document/product/1616/126160',
-      ],
-    ],
-  },
-] as const
-
 const MODEL_CATALOG = [
   {
     id: 'qwen',
@@ -314,6 +158,7 @@ const MODEL_CATALOG = [
       ['qwen-max', '企业文本生成与长上下文'],
       ['qwen-image', '文生图与视觉素材'],
       ['wan-video', '文生视频与异步任务'],
+      ['qwen-tts', '多语言语音合成'],
     ],
   },
   {
@@ -371,8 +216,90 @@ type ProviderApiGuide = readonly [
   model: string,
   tokenFlowEndpoint: string,
   upstreamEndpoint: string,
-  reference: string,
+  requestExample: string,
 ]
+
+const buildTokenFlowRequestExample = (
+  task: string,
+  model: string,
+  endpoint: string
+) => {
+  if (task === 'Image generation') {
+    return `POST ${endpoint.replace('POST ', '')}
+Authorization: Bearer $TOKENFLOW_API_KEY
+Content-Type: application/json
+
+{
+  "model": "${model}",
+  "prompt": "A clean product hero image for a global SaaS website",
+  "size": "1024x1024",
+  "n": 1
+}`
+  }
+
+  if (task === 'Video tasks') {
+    return `POST ${endpoint.replace('POST ', '')}
+Authorization: Bearer $TOKENFLOW_API_KEY
+Content-Type: application/json
+
+{
+  "model": "${model}",
+  "prompt": "A 10-second product demo with clean studio lighting",
+  "seconds": 10
+}`
+  }
+
+  if (task === 'Speech synthesis') {
+    return `POST ${endpoint.replace('POST ', '')}
+Authorization: Bearer $TOKENFLOW_API_KEY
+Content-Type: application/json
+
+{
+  "model": "${model}",
+  "input": "Welcome to TokenFlow API",
+  "voice": "default",
+  "response_format": "mp3"
+}`
+  }
+
+  if (task === 'Embeddings') {
+    return `POST ${endpoint.replace('POST ', '')}
+Authorization: Bearer $TOKENFLOW_API_KEY
+Content-Type: application/json
+
+{
+  "model": "${model}",
+  "input": ["Enterprise knowledge search document"]
+}`
+  }
+
+  if (task === 'Multimodal understanding') {
+    return `POST ${endpoint.replace('POST ', '')}
+Authorization: Bearer $TOKENFLOW_API_KEY
+Content-Type: application/json
+
+{
+  "model": "${model}",
+  "messages": [{
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "Describe this image"},
+      {"type": "image_url", "image_url": {"url": "https://example.com/image.png"}}
+    ]
+  }]
+}`
+  }
+
+  return `POST ${endpoint.replace('POST ', '')}
+Authorization: Bearer $TOKENFLOW_API_KEY
+Content-Type: application/json
+
+{
+  "model": "${model}",
+  "messages": [{"role": "user", "content": "Write a short product announcement"}],
+  "stream": true
+}`
+}
 
 const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
   qwen: [
@@ -381,21 +308,44 @@ const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
       'qwen-max',
       'POST /v1/chat/completions',
       'POST /compatible-mode/v1/chat/completions',
-      'https://help.aliyun.com/zh/model-studio/text-generation',
+      buildTokenFlowRequestExample(
+        'Text generation',
+        'qwen-max',
+        'POST /v1/chat/completions'
+      ),
     ],
     [
       'Image generation',
       'qwen-image',
       'POST /v1/images/generations',
       'POST /api/v1/services/aigc/multimodal-generation/generation',
-      'https://help.aliyun.com/en/model-studio/qwen-image-api',
+      buildTokenFlowRequestExample(
+        'Image generation',
+        'qwen-image',
+        'POST /v1/images/generations'
+      ),
     ],
     [
       'Video tasks',
       'wan-video',
       'POST /v1/videos',
       'POST /api/v1/services/aigc/video-generation/video-synthesis',
-      'https://help.aliyun.com/en/model-studio/text-to-video-api-reference',
+      buildTokenFlowRequestExample(
+        'Video tasks',
+        'wan-video',
+        'POST /v1/videos'
+      ),
+    ],
+    [
+      'Speech synthesis',
+      'qwen-tts',
+      'POST /v1/audio/speech',
+      'Qwen-TTS HTTP / DashScope audio adapter',
+      buildTokenFlowRequestExample(
+        'Speech synthesis',
+        'qwen-tts',
+        'POST /v1/audio/speech'
+      ),
     ],
   ],
   deepseek: [
@@ -404,14 +354,22 @@ const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
       'deepseek-chat',
       'POST /v1/chat/completions',
       'POST /chat/completions',
-      'https://api-docs.deepseek.com/api/create-chat-completion/',
+      buildTokenFlowRequestExample(
+        'Text generation',
+        'deepseek-chat',
+        'POST /v1/chat/completions'
+      ),
     ],
     [
       'Text generation',
       'deepseek-reasoner',
       'POST /v1/chat/completions',
       'POST /chat/completions',
-      'https://api-docs.deepseek.com/guides/thinking_mode/',
+      buildTokenFlowRequestExample(
+        'Text generation',
+        'deepseek-reasoner',
+        'POST /v1/chat/completions'
+      ),
     ],
   ],
   doubao: [
@@ -420,28 +378,44 @@ const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
       'doubao-seed-1-6',
       'POST /v1/chat/completions',
       'POST /api/v3/chat/completions',
-      'https://www.volcengine.com/docs/82379/66619f8df281250274ef4f88?lang=zh',
+      buildTokenFlowRequestExample(
+        'Text generation',
+        'doubao-seed-1-6',
+        'POST /v1/chat/completions'
+      ),
     ],
     [
       'Multimodal understanding',
       'doubao-vision',
       'POST /v1/chat/completions',
       'POST /api/v3/chat/completions',
-      'https://www.volcengine.com/docs/82379/66619f8df281250274ef4f88?lang=zh',
+      buildTokenFlowRequestExample(
+        'Multimodal understanding',
+        'doubao-vision',
+        'POST /v1/chat/completions'
+      ),
     ],
     [
       'Image generation',
       'doubao-image',
       'POST /v1/images/generations',
       'Ark image generation API',
-      'https://www.volcengine.com/docs/82379/1399008?lang=zh',
+      buildTokenFlowRequestExample(
+        'Image generation',
+        'doubao-image',
+        'POST /v1/images/generations'
+      ),
     ],
     [
       'Video tasks',
       'doubao-video',
       'POST /v1/videos',
       'Ark video generation API',
-      'https://www.volcengine.com/docs/82379/1399008?lang=zh',
+      buildTokenFlowRequestExample(
+        'Video tasks',
+        'doubao-video',
+        'POST /v1/videos'
+      ),
     ],
   ],
   kimi: [
@@ -450,14 +424,22 @@ const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
       'moonshot-v1-128k',
       'POST /v1/chat/completions',
       'POST /v1/chat/completions',
-      'https://platform.kimi.com/docs/api/chat',
+      buildTokenFlowRequestExample(
+        'Text generation',
+        'moonshot-v1-128k',
+        'POST /v1/chat/completions'
+      ),
     ],
     [
       'Multimodal understanding',
       'kimi-k2.6',
       'POST /v1/chat/completions',
       'POST /v1/chat/completions',
-      'https://platform.kimi.com/docs/introduction',
+      buildTokenFlowRequestExample(
+        'Multimodal understanding',
+        'kimi-k2.6',
+        'POST /v1/chat/completions'
+      ),
     ],
   ],
   glm: [
@@ -466,14 +448,22 @@ const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
       'glm-4.5',
       'POST /v1/chat/completions',
       'POST /api/paas/v4/chat/completions',
-      'https://docs.bigmodel.cn/cn/guide/develop/http/introduction',
+      buildTokenFlowRequestExample(
+        'Text generation',
+        'glm-4.5',
+        'POST /v1/chat/completions'
+      ),
     ],
     [
       'Image generation',
       'glm-image',
       'POST /v1/images/generations',
       'POST /api/paas/v4/images/generations',
-      'https://docs.bigmodel.cn/cn/guide/models/image-generation/glm-image',
+      buildTokenFlowRequestExample(
+        'Image generation',
+        'glm-image',
+        'POST /v1/images/generations'
+      ),
     ],
   ],
   qianfan: [
@@ -482,28 +472,44 @@ const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
       'ernie-4.0-8k',
       'POST /v1/chat/completions',
       'POST /v2/chat/completions',
-      'https://cloud.baidu.com/doc/qianfan/s/qmh4sv5vi',
+      buildTokenFlowRequestExample(
+        'Text generation',
+        'ernie-4.0-8k',
+        'POST /v1/chat/completions'
+      ),
     ],
     [
       'Image generation',
       'qianfan-image',
       'POST /v1/images/generations',
       'POST /v2/images/generations',
-      'https://cloud.baidu.com/doc/qianfan-api/s/8m7u6un8a',
+      buildTokenFlowRequestExample(
+        'Image generation',
+        'qianfan-image',
+        'POST /v1/images/generations'
+      ),
     ],
     [
       'Video tasks',
       'qianfan-video',
       'POST /v1/videos',
       'POST /beta/video/generations/qianfan-video',
-      'https://cloud.baidu.com/doc/qianfan-api/s/wmlj5vv6n',
+      buildTokenFlowRequestExample(
+        'Video tasks',
+        'qianfan-video',
+        'POST /v1/videos'
+      ),
     ],
     [
       'Embeddings',
       'qianfan-embedding',
       'POST /v1/embeddings',
       'POST /v2/embeddings',
-      'https://cloud.baidu.com/doc/qianfan/s/qmh4sv5vi',
+      buildTokenFlowRequestExample(
+        'Embeddings',
+        'qianfan-embedding',
+        'POST /v1/embeddings'
+      ),
     ],
   ],
   minimax: [
@@ -512,28 +518,44 @@ const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
       'abab6.5s-chat',
       'POST /v1/chat/completions',
       'POST /v1/text/chatcompletion_v2',
-      'https://platform.minimaxi.com/docs/api-reference/text-post',
+      buildTokenFlowRequestExample(
+        'Text generation',
+        'abab6.5s-chat',
+        'POST /v1/chat/completions'
+      ),
     ],
     [
       'Speech synthesis',
       'minimax-speech',
       'POST /v1/audio/speech',
       'POST /v1/t2a_v2',
-      'https://platform.minimaxi.com/docs/api-reference/speech-t2a-http',
+      buildTokenFlowRequestExample(
+        'Speech synthesis',
+        'minimax-speech',
+        'POST /v1/audio/speech'
+      ),
     ],
     [
       'Image generation',
       'minimax-image',
       'POST /v1/images/generations',
       'MiniMax image generation API',
-      'https://platform.minimaxi.com/docs/api-reference/api-overview',
+      buildTokenFlowRequestExample(
+        'Image generation',
+        'minimax-image',
+        'POST /v1/images/generations'
+      ),
     ],
     [
       'Video tasks',
       'minimax-video',
       'POST /v1/videos',
       'POST /v1/video_generation',
-      'https://platform.minimaxi.com/docs/guides/video-generation',
+      buildTokenFlowRequestExample(
+        'Video tasks',
+        'minimax-video',
+        'POST /v1/videos'
+      ),
     ],
   ],
   hunyuan: [
@@ -542,21 +564,33 @@ const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
       'hunyuan-lite',
       'POST /v1/chat/completions',
       'Tencent Cloud Chat API',
-      'https://cloud.tencent.com/document/product/1729/111007',
+      buildTokenFlowRequestExample(
+        'Text generation',
+        'hunyuan-lite',
+        'POST /v1/chat/completions'
+      ),
     ],
     [
       'Image generation',
       'hunyuan-image',
       'POST /v1/images/generations',
       'Tencent Cloud image generation API',
-      'https://cloud.tencent.cn/document/api/1668/88077',
+      buildTokenFlowRequestExample(
+        'Image generation',
+        'hunyuan-image',
+        'POST /v1/images/generations'
+      ),
     ],
     [
       'Video tasks',
       'hunyuan-video',
       'POST /v1/videos',
       'SubmitHunyuanToVideoJob / DescribeHunyuanToVideoJob',
-      'https://cloud.tencent.com/document/product/1616/107795',
+      buildTokenFlowRequestExample(
+        'Video tasks',
+        'hunyuan-video',
+        'POST /v1/videos'
+      ),
     ],
   ],
 }
@@ -569,7 +603,7 @@ const DOC_NAV_ITEMS = [
   ['#api-surface', 'API surface'],
   ['#generation', 'Generation workflows'],
   ['#models', 'China model guide for global teams'],
-  ['#references', 'Official upstream references'],
+  ['#references', 'Provider call formats'],
   ['#governance', 'Enterprise governance'],
   ['#errors', 'Error handling'],
 ] as const
@@ -675,9 +709,6 @@ export function DeveloperDocs() {
   const [selectedProvider, setSelectedProvider] = useState('qwen')
   const [activeSection, setActiveSection] = useState('overview')
   const apiBaseUrl = `${window.location.origin}/v1`
-  const selectedProviderGroup =
-    OFFICIAL_DOC_GROUPS.find((group) => group.id === selectedProvider) ??
-    OFFICIAL_DOC_GROUPS[0]
   const selectedModelCatalog =
     MODEL_CATALOG.find((group) => group.id === selectedProvider) ??
     MODEL_CATALOG[0]
@@ -1145,13 +1176,13 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                 </p>
                 <p className='text-muted-foreground mt-2'>
                   {t(
-                    'Use the endpoint guide for the common path, then open the selected provider reference for provider-specific fields. Unsupported fields should be removed or configured through the channel adapter.'
+                    'Use the endpoint guide for the common path, then open the selected provider call format for provider-specific fields. Unsupported fields should be removed or configured through the channel adapter.'
                   )}
                 </p>
               </div>
               <p className='text-muted-foreground mt-6 text-xs leading-6'>
                 {t(
-                  'Media requests can be asynchronous and may have provider-specific fields. Use the linked upstream reference and the channel test tool to confirm the exact model parameters before production rollout.'
+                  'Media requests can be asynchronous and may have provider-specific fields. Use the provider call format below and the channel test tool to confirm exact model parameters before production rollout.'
                 )}
               </p>
             </DocSection>
@@ -1212,8 +1243,7 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                     onClick={() => setSelectedProvider(selectedModelCatalog.id)}
                     className='text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm'
                   >
-                    {t('View official references')}{' '}
-                    <ArrowRight className='size-4' />
+                    {t('View call formats')} <ArrowRight className='size-4' />
                   </a>
                 </div>
                 <div className='bg-border grid gap-px sm:grid-cols-2'>
@@ -1252,7 +1282,7 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                     model,
                     tokenFlowEndpoint,
                     upstreamEndpoint,
-                    reference,
+                    requestExample,
                   ]) => (
                     <div
                       key={`${task}-${model}`}
@@ -1287,15 +1317,14 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                         <code className='font-mono text-xs break-words'>
                           {upstreamEndpoint}
                         </code>
-                        <a
-                          href={reference}
-                          target='_blank'
-                          rel='noreferrer'
-                          className='text-muted-foreground hover:text-foreground mt-2 inline-flex items-center gap-1 text-xs underline underline-offset-4'
-                        >
-                          {t('Open official reference')}
-                          <ExternalLink className='size-3' />
-                        </a>
+                        <details className='mt-3'>
+                          <summary className='text-muted-foreground hover:text-foreground cursor-pointer text-xs'>
+                            {t('View request example')}
+                          </summary>
+                          <pre className='bg-muted/40 mt-2 max-h-64 overflow-auto rounded-md p-3 text-xs leading-5 whitespace-pre-wrap'>
+                            {requestExample}
+                          </pre>
+                        </details>
                       </div>
                     </div>
                   )
@@ -1311,73 +1340,86 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
             <DocSection
               id='references'
               eyebrow='07'
-              title={t('Official upstream references')}
+              title={t('Provider call formats')}
             >
               <p className='text-muted-foreground mb-6 max-w-3xl text-sm leading-7'>
                 {t(
-                  'These are official provider documents for API keys, model capabilities, request fields, regional endpoints, and pricing. TokenFlow remains the stable gateway your applications call.'
+                  'Choose a provider and task to copy a ready-to-run TokenFlow request. The examples cover text, multimodal, image, video, speech, and embedding calls without sending users to external documentation.'
                 )}
               </p>
-              <div
-                id={`provider-${selectedProviderGroup.id}`}
-                className='scroll-mt-24'
-                role='tabpanel'
-                aria-label={selectedProviderGroup.provider}
+              <nav
+                className='border-border mb-4 flex gap-2 overflow-x-auto border-b pb-3'
+                aria-label={t('China model providers')}
+                role='tablist'
               >
-                <div className='mb-4 flex items-center gap-3'>
-                  <nav
-                    className='flex min-w-0 flex-1 gap-2 overflow-x-auto pb-1'
-                    aria-label={t('Provider directory')}
-                    role='tablist'
+                {MODEL_CATALOG.map((group) => (
+                  <button
+                    key={group.id}
+                    type='button'
+                    role='tab'
+                    aria-selected={selectedProvider === group.id}
+                    onClick={() => selectProvider(group.id)}
+                    className={cn(
+                      'shrink-0 rounded-md border px-3 py-2 text-sm whitespace-nowrap transition-colors',
+                      selectedProvider === group.id
+                        ? 'border-foreground bg-foreground text-background'
+                        : 'border-border hover:bg-muted'
+                    )}
                   >
-                    {OFFICIAL_DOC_GROUPS.map((group) => (
-                      <button
-                        key={group.id}
-                        type='button'
-                        role='tab'
-                        aria-selected={selectedProvider === group.id}
-                        aria-controls={`provider-${group.id}`}
-                        onClick={() => selectProvider(group.id)}
-                        className={cn(
-                          'border-border shrink-0 rounded-md border px-3 py-2 text-sm whitespace-nowrap transition-colors',
-                          selectedProvider === group.id
-                            ? 'bg-foreground text-background border-foreground'
-                            : 'hover:bg-muted'
-                        )}
-                      >
-                        {group.provider}
-                      </button>
-                    ))}
-                  </nav>
-                  <span className='text-muted-foreground text-xs'>
-                    {t('Select an official API reference')}
-                  </span>
-                </div>
-                <p className='text-muted-foreground mb-4 text-xs leading-5'>
-                  {t(selectedProviderGroup.access)}
-                </p>
-                <div className='border-border grid gap-px overflow-hidden rounded-md border sm:grid-cols-2'>
-                  {selectedProviderGroup.docs.map(
-                    ([title, description, href]) => (
-                      <a
-                        key={href}
-                        href={href}
-                        target='_blank'
-                        rel='noreferrer'
-                        className='bg-background hover:bg-muted/40 group p-5 transition-colors'
-                      >
-                        <div className='text-muted-foreground flex items-center justify-between font-mono text-xs uppercase'>
-                          <span>{selectedProviderGroup.provider}</span>
-                          <ExternalLink className='size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
+                    {group.provider}
+                  </button>
+                ))}
+              </nav>
+              <div className='grid gap-4'>
+                {selectedProviderApiGuide.map(
+                  ([
+                    task,
+                    model,
+                    tokenFlowEndpoint,
+                    upstreamEndpoint,
+                    requestExample,
+                  ]) => (
+                    <article
+                      key={`${task}-${model}`}
+                      className='border-border overflow-hidden rounded-md border'
+                    >
+                      <div className='bg-muted/30 border-border flex flex-wrap items-center justify-between gap-3 border-b px-4 py-3'>
+                        <div>
+                          <h3 className='font-semibold'>{t(task)}</h3>
+                          <code className='text-muted-foreground mt-1 block text-xs'>
+                            {model}
+                          </code>
                         </div>
-                        <h4 className='mt-8 font-semibold'>{t(title)}</h4>
-                        <p className='text-muted-foreground mt-2 text-sm leading-6'>
-                          {t(description)}
-                        </p>
-                      </a>
-                    )
-                  )}
-                </div>
+                        <code className='text-muted-foreground text-xs'>
+                          {tokenFlowEndpoint}
+                        </code>
+                      </div>
+                      <div className='grid gap-4 p-4 md:grid-cols-2'>
+                        <div>
+                          <p className='text-muted-foreground mb-2 text-xs font-semibold uppercase'>
+                            {t('TokenFlow request format')}
+                          </p>
+                          <pre className='overflow-auto rounded-md bg-[#171816] p-4 text-xs leading-5 whitespace-pre-wrap text-[#f2f2ec]'>
+                            {requestExample}
+                          </pre>
+                        </div>
+                        <div>
+                          <p className='text-muted-foreground mb-2 text-xs font-semibold uppercase'>
+                            {t('Upstream adapter format')}
+                          </p>
+                          <p className='text-muted-foreground text-sm leading-6'>
+                            {t(
+                              'TokenFlow keeps this public request stable and translates it to the provider route shown below. Provider-specific authentication, task creation, polling, and response normalization stay inside the gateway channel.'
+                            )}
+                          </p>
+                          <code className='bg-muted/40 mt-3 block rounded-md p-3 text-xs leading-5 break-words whitespace-pre-wrap'>
+                            {upstreamEndpoint}
+                          </code>
+                        </div>
+                      </div>
+                    </article>
+                  )
+                )}
               </div>
             </DocSection>
 
