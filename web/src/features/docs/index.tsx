@@ -404,14 +404,14 @@ const PROVIDER_API_GUIDES: Record<string, readonly ProviderApiGuide[]> = {
       'deepseek-chat',
       'POST /v1/chat/completions',
       'POST /chat/completions',
-      'https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/',
+      'https://api-docs.deepseek.com/api/create-chat-completion/',
     ],
     [
       'Text generation',
       'deepseek-reasoner',
       'POST /v1/chat/completions',
       'POST /chat/completions',
-      'https://api-docs.deepseek.com/zh-cn/guides/reasoning_model',
+      'https://api-docs.deepseek.com/guides/thinking_mode/',
     ],
   ],
   doubao: [
