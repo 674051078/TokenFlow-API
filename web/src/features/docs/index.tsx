@@ -1266,7 +1266,7 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                   </h3>
                   <p className='text-muted-foreground mt-2 text-sm leading-6'>
                     {t(
-                      'Select a provider above to see which model alias, TokenFlow endpoint, and native provider API belong to each task.'
+                      'Select a provider above to see which model alias, TokenFlow endpoint, and adapter route belong to each task.'
                     )}
                   </p>
                 </div>
@@ -1274,7 +1274,7 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                   <span>{t('Task')}</span>
                   <span>{t('TokenFlow model alias')}</span>
                   <span>{t('TokenFlow endpoint')}</span>
-                  <span>{t('Native provider API')}</span>
+                  <span>{t('Provider adapter route')}</span>
                 </div>
                 {selectedProviderApiGuide.map(
                   ([
@@ -1312,7 +1312,7 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
                       </div>
                       <div>
                         <span className='text-muted-foreground mb-1 block text-xs md:hidden'>
-                          {t('Native provider API')}
+                          {t('Provider adapter route')}
                         </span>
                         <code className='font-mono text-xs break-words'>
                           {upstreamEndpoint}
@@ -1332,7 +1332,7 @@ curl ${apiBaseUrl}/videos/{video_id}/content \\
               </div>
               <p className='text-muted-foreground mt-4 text-xs leading-6'>
                 {t(
-                  'The native API column is for comparison only. Your application should call the TokenFlow endpoint and use the configured alias; provider-native fields are translated by the channel when supported.'
+                  'The adapter route is shown for transparency only. Your application should call the TokenFlow endpoint and use the configured alias; provider-specific fields are translated by the channel when supported.'
                 )}
               </p>
             </DocSection>
