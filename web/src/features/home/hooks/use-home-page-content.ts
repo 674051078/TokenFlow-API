@@ -39,11 +39,8 @@ export function useHomePageContent(): HomePageContentResult {
     let mounted = true
 
     const loadContent = async () => {
-      // Load from localStorage first for immediate display
+      // Keep the cache as an offline fallback after the server request.
       const cached = localStorage.getItem(STORAGE_KEY)
-      if (cached && mounted) {
-        setContent(cached)
-      }
 
       try {
         const response = await getHomePageContent()
@@ -61,6 +58,10 @@ export function useHomePageContent(): HomePageContentResult {
         }
       } catch (error) {
         if (!mounted) return
+
+        // Use the cache only when the server cannot be reached. This keeps a
+        // stale custom page from flashing before the server's current value.
+        setContent(cached ?? '')
         // eslint-disable-next-line no-console
         console.error('Failed to load home page content:', error)
         toast.error(i18next.t('Failed to load home page content'))
